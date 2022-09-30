@@ -36,8 +36,12 @@ Em seguida:
 
 ## Uso
 É necessário iniciar o servidor para então acessar a página.
-1. Iniciar o servidor Django
+1. Realizar migração do banco de dados
+```
+python manage.py migrate
+```
+2. Iniciar o servidor Django
 ```
 python manage.py runserver
 ```
-2. Acessar a página [`localhost:8000/FIRST`](http://localhost:8000/FIRST).
+3. Acessar a página [`localhost:8000/FIRST`](http://localhost:8000/FIRST).
