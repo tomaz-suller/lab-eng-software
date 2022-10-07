@@ -9,26 +9,12 @@ class Estado(models.Model):
     class Meta:
         db_table = 'estados'
 
-
-class InstanciaVoo(models.Model):
-    partida_prevista = models.DateTimeField()
-    partida_real = models.DateTimeField()
-    chegada_prevista = models.DateTimeField()
-    chegada_real = models.DateTimeField()
-    estado_atual = models.ForeignKey(Estado)
-    voo = models.ForeignKey(Voo)
-
-    class Meta:
-        db_table = 'instancias_voos'
-
-
 class CompanhiaAerea(models.Model):
     nome = models.CharField(max_length=100)
     sigla = models.CharField(max_length=5)
 
     class Meta:
         db_table = 'companhias_aereas'
-
 
 class Voo(models.Model):
     codigo = models.CharField(max_length=6, primary_key=True)
@@ -37,3 +23,21 @@ class Voo(models.Model):
     companhia_aerea = models.ForeignKey(CompanhiaAerea)
     class Meta:
         db_table = 'voos'
+
+class InstanciaVoo(models.Model):
+    partida_prevista = models.DateTimeField()
+    partida_real = models.DateTimeField()
+    chegada_prevista = models.DateTimeField()
+    chegada_real = models.DateTimeField()
+    estado_atual = models.ForeignKey(Estado)
+    voo = models.ForeignKey(Voo)
+    class Meta:
+        db_table = 'instancias_voos'
+class Movimentacao(models.Model):
+    data_movimentacao = models.DateTimeField()
+    tempo_movimentacao = models.DurationField()
+    instancia_voo = models.ForeignKey(InstanciaVoo)
+    estado_anterior = models.ForeignKey(Estado)
+    estado_posterior = models.ForeignKey(Estado)
+    class Meta:
+        db_table = 'movimentacoes'
