@@ -107,3 +107,25 @@ class VooTest(MonitoramentoAvioesTestFixture):
         voo_1 = Voo.objects.get(codigo="AA1234")
         voo_1.delete()
         self.assertEqual(len(list(Voo.objects.all())), 0)
+
+
+class InstanciaVooTest(MonitoramentoAvioesTestFixture):
+    def test_criacao_id(self):
+        self.assertEqual(self.instancia_voo.id, 1)
+
+    def test_update_estado_atual(self):
+        aterrissado = Estado.objects.create(nome="Aterrissado")
+        self.instancia_voo.estado_atual = aterrissado
+        self.instancia_voo.save()
+        instancia_voo = InstanciaVoo.objects.get(id=1)
+        self.assertEqual(instancia_voo.estado_atual, aterrissado)
+
+    def test_delete(self):
+        self.instancia_voo.delete()
+        self.assertFalse(InstanciaVoo.objects.exists())
+
+    def test_delete_cascades_to_movimentacao(self):
+        movimentacao_set = self.instancia_voo.movimentacao_set.all()
+        self.instancia_voo.delete()
+        for movimentacao in movimentacao_set:
+            self.assertFalse(Movimentacao.objects.contains(movimentacao))
