@@ -19,9 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-          cache: pip
       - name: "Run pre-commit"
         uses: pre-commit/action@v3.0.0
 
@@ -44,6 +41,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+          cache-dependency-path: |
+            requirements/base.txt
+            requirements/production.txt
       - name: "Install dependencies"
         run: pip install -r requirements/production.txt
       - name: "Run tests"
