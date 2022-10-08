@@ -29,9 +29,9 @@ Em seguida:
     ```
     .\env\bin\activate # Ou .\env\scripts\activate
     ```
-4. Instalar os requisitos de Python em `requirements.txt`
+4. Instalar os requisitos de Python em `requirements/production.txt`
     ```
-    pip install -r requirements.txt
+    pip install -r requirements/production.txt
     ```
 
 ## Uso
