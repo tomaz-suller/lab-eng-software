@@ -45,3 +45,14 @@ python manage.py migrate
 python manage.py runserver
 ```
 3. Acessar a página [`localhost:8000/FIRST`](http://localhost:8000/FIRST).
+
+## Desenvolvimento
+Existem requisitos de Python adicionais para desenvolvimento, que devem ser instaldos de `requirements/development.txt`:
+```
+pip install -r requirements/development.txt
+```
+
+Além disso, este projeto usa [`pre-commit`](https://pre-commit.com/) para executar ferramentas de controle de qualidade, que deve ser habilitado após sua instalação:
+```
+pre-commit install
+```
