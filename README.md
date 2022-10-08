@@ -16,7 +16,7 @@ Grupo 2
 As seguintes instruções foram pensadas para sistemas Windows.
 É necessário ter configurado um ambiente previamente com Python>=3.6 e Git.
 Em seguida:
-    
+
 1. Clonar o repositório
     ```
     git clone https://github.com/tomaz-suller/lab-eng-software.git
