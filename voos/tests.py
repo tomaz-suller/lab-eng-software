@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-# Create your tests here.
-from voos.models import Movimentacao, Estado
+from voos.models import *
+
 class MovimentacaoModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -29,3 +29,40 @@ class EstadoModelTest(TestCase):
         estado_1.titulo = "Taxiando"
         estado_1.save()
         self.assertEqual(estado_1.titulo, "Taxiando")
+
+# Teste da classe CompanhiaAerea
+class CompanhiaAereaTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        CompanhiaAerea.objects.create(nome='Companhia A', sigla='AAA')
+    def test_criacao_id(self):
+        companhia_1 = CompanhiaAerea.objects.get(nome='Companhia A')
+        self.assertEqual(companhia_1.id, 1)
+    def test_update_nome(self):
+        companhia_1 = CompanhiaAerea.objects.get(nome='Companhia A')
+        companhia_1.nome = "Companhia B"
+        companhia_1.save()
+        self.assertEqual(companhia_1.nome, "Companhia B")
+    def test_delete(self):
+        companhia_1 = CompanhiaAerea.objects.get(sigla='AAA')
+        companhia_1.delete()
+        self.assertEqual(len(list(CompanhiaAerea.objects.all())), 0)
+
+# Teste da classe Voo
+class VooTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        companhia_1 = CompanhiaAerea.objects.create(nome='Companhia A', sigla='AAA')
+        Voo.objects.create(codigo='AB1234', origem='GRU', destino='SDU', companhia_aerea=companhia_1)
+    def test_criacao_id(self):
+        voo_1 = Voo.objects.get(codigo='AB1234')
+        self.assertEqual(voo_1.codigo, 'AB1234')
+    def test_update_destino(self):
+        voo_1 = Voo.objects.get(codigo='AB1234')
+        voo_1.destino = "LHR"
+        voo_1.save()
+        self.assertEqual(voo_1.destino, "LHR")
+    def test_delete(self):
+        voo_1 = Voo.objects.get(codigo='AB1234')
+        voo_1.delete()
+        self.assertEqual(len(list(Voo.objects.all())), 0)
