@@ -1,6 +1,41 @@
+from datetime import datetime, timedelta, timezone
+
 from django.test import TestCase
 
-from voos.models import CompanhiaAerea, Estado, Movimentacao, Voo
+from voos.models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao, Voo
+
+
+class MonitoramentoAvioesTestFixture(TestCase):
+    @classmethod
+    def setUpTestData(cls) -> None:
+        departure_datetime = datetime(2022, 1, 1, 1, 0, tzinfo=timezone.utc)
+        cls.estado_autorizado = Estado.objects.create(nome="Autorizado")
+        cls.estado_voando = Estado.objects.create(nome="Em voo")
+        cls.companhia = CompanhiaAerea.objects.create(
+            nome="American Airlines", sigla="AA"
+        )
+        cls.voo = Voo.objects.create(
+            codigo="AA1234",
+            origem="GRU",
+            destino="SDU",
+            companhia_aerea=cls.companhia,
+        )
+        cls.instancia_voo = InstanciaVoo.objects.create(
+            partida_prevista=departure_datetime,
+            partida_real=None,
+            chegada_prevista=departure_datetime + timedelta(hours=10),
+            chegada_real=None,
+            estado_atual=cls.estado_voando,
+            voo=cls.voo,
+        )
+        cls.movimentacao = Movimentacao.objects.create(
+            data_movimentacao=departure_datetime,
+            tempo_movimentacao=None,
+            instancia_voo=cls.instancia_voo,
+            estado_anterior=cls.estado_autorizado,
+            estado_posterior=cls.estado_voando,
+        )
+        return super().setUpTestData()
 
 
 class MovimentacaoModelTest(TestCase):
