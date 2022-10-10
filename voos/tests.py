@@ -46,21 +46,22 @@ class MovimentacaoTest(MonitoramentoAvioesTestFixture):
 
     def test_update_estado_anterior(self):
         aterrissado = Estado.objects.create(nome="Aterrissado")
-        self.movimentacao_1.estado_anterior = aterrissado
-        self.movimentacao_1.save()
+        self.movimentacao.estado_anterior = aterrissado
+        self.movimentacao.save()
         movimentacao_1 = Movimentacao.objects.get(id=1)
         self.assertEqual(movimentacao_1.estado_anterior, aterrissado)
 
     def test_update_estado_posterior(self):
         embarcado = Estado.objects.create(nome="Embarcado")
-        self.movimentacao_1.estado_posterior = embarcado
-        self.movimentacao_1.save()
+        self.movimentacao.estado_posterior = embarcado
+        self.movimentacao.save()
         movimentacao_1 = Movimentacao.objects.get(id=1)
-        self.assertEqual(movimentacao_1.estado_posterior, aterrissado)    
+        self.assertEqual(movimentacao_1.estado_posterior, embarcado)    
 
     def test_delete(self):
-        self.movimentacao_1.delete()
-        self.assertFalse(InstanciaVoo.objects.exists())
+        movimentacao = Movimentacao.objects.get(id=1)
+        movimentacao.delete()
+        self.assertEqual(len(list(Movimentacao.objects.all())), 0)
 
 class EstadoTest(MonitoramentoAvioesTestFixture):
     def test_criacao_id(self):
@@ -72,11 +73,6 @@ class EstadoTest(MonitoramentoAvioesTestFixture):
         estado_1.nome = "Em voo"
         estado_1.save()
         self.assertEqual(estado_1.nome, "Em voo")
-
-    def test_delete(self):
-        estado_1 = Estado.objects.get(sigla="Em voo")
-        estado_1.delete()
-        self.assertEqual(len(list(Estado.objects.all())), 0)
 
 
 class CompanhiaAereaTest(MonitoramentoAvioesTestFixture):
