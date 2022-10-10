@@ -39,40 +39,44 @@ class MonitoramentoAvioesTestFixture(TestCase):
         return super().setUpTestData()
 
 
-# TODO(jao) Fix
-@unittest.skip
-class MovimentacaoTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        Movimentacao.objects.create(titulo="Os Irmãos Karamazov", isbn="000000")
 
+class MovimentacaoTest(MonitoramentoAvioesTestFixture):
     def test_criacao_id(self):
-        movimentacao_1 = Movimentacao.objects.get(titulo="Os Irmãos Karamazov")
-        self.assertEqual(movimentacao_1.id, 1)
+        self.assertEqual(self.movimentacao.id, 1)
 
-    def test_update_titulo(self):
-        movimentacao_1 = Movimentacao.objects.get(titulo="Os Irmãos Karamazov")
-        movimentacao_1.titulo = "Outro nome"
-        movimentacao_1.save()
-        self.assertEqual(movimentacao_1.titulo, "Outro nome")
+    def test_update_estado_anterior(self):
+        aterrissado = Estado.objects.create(nome="Aterrissado")
+        self.movimentacao_1.estado_anterior = aterrissado
+        self.movimentacao_1.save()
+        movimentacao_1 = Movimentacao.objects.get(id=1)
+        self.assertEqual(movimentacao_1.estado_anterior, aterrissado)
 
+    def test_update_estado_posterior(self):
+        embarcado = Estado.objects.create(nome="Embarcado")
+        self.movimentacao_1.estado_posterior = embarcado
+        self.movimentacao_1.save()
+        movimentacao_1 = Movimentacao.objects.get(id=1)
+        self.assertEqual(movimentacao_1.estado_posterior, aterrissado)    
 
-# TODO(jao) Completar
-@unittest.skip
-class EstadoTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        Estado.objects.create(nome="Embarcando")
+    def test_delete(self):
+        self.movimentacao_1.delete()
+        self.assertFalse(InstanciaVoo.objects.exists())
 
+class EstadoTest(MonitoramentoAvioesTestFixture):
     def test_criacao_id(self):
-        estado_1 = Estado.objects.get(nome="Embarcando")
+        estado_1 = Estado.objects.get(nome="Autorizado")
         self.assertEqual(estado_1.id, 1)
 
     def test_update_estado(self):
-        estado_1 = Estado.objects.get(titulo="Embarcando")
-        estado_1.titulo = "Taxiando"
+        estado_1 = Estado.objects.get(nome="Autorizado")
+        estado_1.nome = "Em voo"
         estado_1.save()
-        self.assertEqual(estado_1.titulo, "Taxiando")
+        self.assertEqual(estado_1.nome, "Em voo")
+
+    def test_delete(self):
+        estado_1 = Estado.objects.get(sigla="Em voo")
+        estado_1.delete()
+        self.assertEqual(len(list(Estado.objects.all())), 0)
 
 
 class CompanhiaAereaTest(MonitoramentoAvioesTestFixture):
