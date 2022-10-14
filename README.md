@@ -44,7 +44,10 @@ Em seguida:
     ```
 
 ### Inicialização
-TODO
+Antes de executar a aplicação, é necessário realizar a configuração do banco de dados realizando _migrations_:
+```
+python manage.py migrate
+``` 
 
 ## Desenvolvimento
 Existem requisitos de Python adicionais para desenvolvimento, que devem ser instaldos de `requirements/development.txt`:
@@ -58,6 +61,12 @@ pre-commit install
 ```
 
 É recomendado ainda configurar o seu editor de texto para realizar lint dos arquivos usando `flake8` automaticamente. Para o Visual Studio Code, instruções estão disponíveis na [documentação](https://code.visualstudio.com/docs/python/linting#_flake8).
+
+### Modificação nos modelos
+A cada modificação nos arquivos de especificação, é necessário gerar movas _migrations_:
+```
+python manage.py makemigrations
+```
 
 ### Testes
 Testes são executados automaticamente a cada commit na branch `main` por integração contínua via GitHub Actions.
