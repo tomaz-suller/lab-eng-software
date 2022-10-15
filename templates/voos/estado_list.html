@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Estados</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Estado</th>
+            </tr>
+            {% for estado in estado_list %}
+            <tr>
+                <td>{{ estado.id }}</td>
+                <td>{{ estado.nome }}</td>
+            </tr>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
