@@ -1,4 +1,3 @@
-import unittest
 from datetime import datetime, timedelta, timezone
 
 from django.test import TestCase
@@ -39,7 +38,6 @@ class MonitoramentoAvioesTestFixture(TestCase):
         return super().setUpTestData()
 
 
-
 class MovimentacaoTest(MonitoramentoAvioesTestFixture):
     def test_criacao_id(self):
         self.assertEqual(self.movimentacao.id, 1)
@@ -56,12 +54,13 @@ class MovimentacaoTest(MonitoramentoAvioesTestFixture):
         self.movimentacao.estado_posterior = embarcado
         self.movimentacao.save()
         movimentacao_1 = Movimentacao.objects.get(id=1)
-        self.assertEqual(movimentacao_1.estado_posterior, embarcado)    
+        self.assertEqual(movimentacao_1.estado_posterior, embarcado)
 
     def test_delete(self):
         movimentacao = Movimentacao.objects.get(id=1)
         movimentacao.delete()
         self.assertEqual(len(list(Movimentacao.objects.all())), 0)
+
 
 class EstadoTest(MonitoramentoAvioesTestFixture):
     def test_criacao_id(self):

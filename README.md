@@ -47,7 +47,7 @@ Em seguida:
 Antes de executar a aplicação, é necessário realizar a configuração do banco de dados realizando _migrations_:
 ```
 python manage.py migrate
-``` 
+```
 
 ## Desenvolvimento
 Existem requisitos de Python adicionais para desenvolvimento, que devem ser instaldos de `requirements/development.txt`:
