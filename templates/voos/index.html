@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load voos_auth %}
+
+{% block content %}
+    <ul>
+        {% for page_name in base_pages %}
+        {% if user|can_view:page_name %}
+        <li><a href="#">{{ page_name|upper }}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}
