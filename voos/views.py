@@ -14,3 +14,12 @@ def index(request):
         "base_pages": ["crud", "movimentacao", "relatorio"],
     }
     return render(request, "voos/index.html", context)
+
+def crud(request):
+    return render(request, "voos/crud.html")
+
+def movimentacao(request):
+    return render(request, "voos/movimentacao.html")
+
+def relatorio(request):
+    return render(request, "voos/relatorio.html")

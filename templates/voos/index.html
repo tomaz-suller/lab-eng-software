@@ -6,7 +6,7 @@
         <li><a href="/accounts/login">Login</a></li>
         {% for page_name in base_pages %}
         {% if user|can_view:page_name %}
-        <li><a href="#">{{ page_name|upper }}</a></li>
+        <li><a href="{{ page_name }}">{{ page_name|upper }}</a></li>
         {% endif %}
         {% endfor %}
     </ul>
