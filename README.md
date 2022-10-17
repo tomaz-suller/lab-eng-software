@@ -49,6 +49,24 @@ Antes de executar a aplicação, é necessário realizar a configuração do ban
 python manage.py migrate
 ```
 
+### Teste de navegação
+Inicialmente, é necessário carregar o dump disponível no repositório para carregar os usuários de teste:
+```
+python manage.py loaddata db.json
+```
+
+Para realizar o teste de navegação, a página raíz (index) deve ser acessada após iniciar o servidor com:
+```
+python manage.py runserver
+```
+
+Em seguida selecione o item "Login". Nessa opção, pode-se autenticar com os usuários:
+- Usuário: **piloto**. Senha: **senha-do-piloto**. Tem acesso apenas a movimentações e alguns itens do CRUD.
+- Usuário: **gerente**. Senha: **senha-do-gerente**. Tem acesso a alguns itens do CRUD, movimentações e relatórios.
+- Usuário: **admin**. Senha: **admin**. Super-usuário de administração do sistema, tem acesso a todas as funcionalidades do sistema.
+
+De acordo com o usuário autenticado, as opções disponíveis mudam no menu principal.
+
 ## Desenvolvimento
 Existem requisitos de Python adicionais para desenvolvimento, que devem ser instaldos de `requirements/development.txt`:
 ```
