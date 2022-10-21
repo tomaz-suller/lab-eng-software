@@ -26,3 +26,4 @@ def movimentacao(request):
 
 def relatorio(request):
     return render(request, "voos/relatorio.html")
+
