@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Login</h2>
+<div class="jumbotron jumbotron-fluid bg-primary pb-2 mb-3">
+    <div class="container">
+      <h1 class="display-3 text-light">Login</h1>
+    </div>
+</div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
-</form>
+<div class="d-flex justify-content-center">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Login" class="btn btn-primary mt-auto">
+    </form>
+</div>
 
 {% endblock %}
