@@ -5,9 +5,10 @@
 {% block content %}
     <nav class="navbar navbar-expand-lg navbar-primary bg-primary">
         <a class="navbar-brand p-2" href="#">
-            <img src="{% static "icons/plane.png" %}" width="30" height="30" alt="">
+            <img src="{% static 'icons/plane.png' %}" width="30" height="30" alt="">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -15,7 +16,7 @@
             <ul class="navbar-nav mr-auto">
                 {% for page_name in base_pages %}
                 {% if user|can_view:page_name %}
-                <li class="nav-item"><a href="{{ page_name }}" class="nav-link text-white">{{ page_name|upper }}</a></li>
+                <li class="nav-item"><a href="{{ page_name }}" class="nav-link text-white">{{ page_name|title }}</a></li>
                 {% endif %}
                 {% endfor %}
 
