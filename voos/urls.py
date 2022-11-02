@@ -12,4 +12,7 @@ urlpatterns = [
     path("inicio/crud/", views.crud),
     path("inicio/movimentacao/", views.movimentacao),
     path("inicio/relatorio/", views.relatorio),
+
+    path("crud/companhia-aerea/criar", views.CompanhiaAereaCreateView.as_view()),
+    path("crud/companhia-aerea", views.CompanhiaAereaListView.as_view()),
 ]
