@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from .forms import CompanhiaAereaForm
-from .models import CompanhiaAerea, Estado
+from .models import CompanhiaAerea, Estado, InstanciaVoo
 
 
 class EstadoListView(PermissionRequiredMixin, ListView):
@@ -43,8 +43,8 @@ def crud(request):
 
 
 def movimentacao(request):
-    return render(request, "voos/movimentacao.html")
-
+    instancia_voo_list = InstanciaVoo.objects.all()
+    return render(request, "voos/movimentacao.html", {"instancia_voo_list": instancia_voo_list})
 
 def relatorio(request):
     return render(request, "voos/relatorio.html")
