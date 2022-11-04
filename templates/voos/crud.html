@@ -17,7 +17,7 @@ CRUD
     <div class="row">
 
         {% if perms.voos.view_voo %}
-        <div class="card col-sm m-3" style="width: 18rem;">
+        <div class="card col-4 m-3" style="width: 18rem;">
             <img class="card-img-top" src="{% static "icons/voo.png" %}" alt="Voos">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">Voos</h5>
@@ -28,7 +28,7 @@ CRUD
         {% endif %}
 
         {% if perms.voos.view_companhiaaerea %}
-        <div class="card col-sm m-3" style="width: 18rem;">
+        <div class="card col-4 m-3" style="width: 18rem;">
             <img class="card-img-top" src="{% static "icons/companhia_aerea.png" %}" alt="Companhias aéreas">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">Companhias aéreas</h5>
@@ -39,7 +39,7 @@ CRUD
         {% endif %}
 
         {% if perms.voos.view_instanciavoo %}
-        <div class="card col-sm m-3" style="width: 18rem;">
+        <div class="card col-4 m-3" style="width: 18rem;">
             <img class="card-img-top" src="{% static "icons/list.png" %}" alt="Instâncias de voo">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">Instâncias de voo</h5>

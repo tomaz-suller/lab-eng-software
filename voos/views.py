@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Count
 
 from .forms import CompanhiaAereaForm
@@ -30,6 +30,18 @@ class CompanhiaAereaCreateView(PermissionRequiredMixin, CreateView):
     success_url = "/crud/companhia-aerea"
 
 
+class CompanhiaAereaUpdateView(PermissionRequiredMixin, UpdateView):
+    model = CompanhiaAerea
+    permission_required = "voos.change_companhiaaerea"
+    fields = ['nome', 'sigla']
+    success_url = '/crud/companhia-aerea'
+
+class InstanciaVooUpdateView(PermissionRequiredMixin, UpdateView):
+    model = InstanciaVoo
+    permission_required = "voos.change_instancia_voo"
+    fields = ['estado']
+    success_url = '/movimentacao'
+
 def index(request):
     context = {
         "base_pages": ["crud", "movimentacao", "relatorio"],
@@ -46,8 +58,8 @@ def crud(request):
 
 
 def movimentacao(request):
-    return render(request, "voos/movimentacao.html")
-
+    instancia_voo_list = InstanciaVoo.objects.all()
+    return render(request, "voos/movimentacao.html", {"instancia_voo_list": instancia_voo_list})
 
 def relatorio(request):
     return render(request, "voos/relatorio.html")
