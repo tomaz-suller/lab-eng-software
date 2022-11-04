@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Companhia Aérea
+Instancia Voo
 {% endblock %}
 
 {% block content %}
 
 <div class="jumbotron jumbotron-fluid bg-primary pb-2">
     <div class="container d-flex justify-content-center">
-      <h1 class="display-3 text-light">Criar/Alterar Companhia Aérea</h1>
+      <h1 class="display-3 text-light">Alterar estado de instância de voo</h1>
     </div>
 </div>
 
@@ -22,14 +22,11 @@ Companhia Aérea
         <!-- {{ form.as_p }} -->
 
         <div class="form-group mt-2">
-            {{ form.nome }}
-        </div>
-        <div class="form-group mt-2">
-            {{ form.sigla }}
+            {{ form.estado }}
         </div>
         
         <input class="btn btn-primary mt-2" type="submit" value="Criar">
-        <a href="/crud/companhia-aerea">
+        <a href="/movimentacao">
             <input class="btn btn-secondary mt-2" type="button" value="Voltar">
         </a>
     </form>
