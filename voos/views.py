@@ -33,6 +33,11 @@ class CompanhiaAereaUpdateView(PermissionRequiredMixin, UpdateView):
     fields = ['nome', 'sigla']
     success_url = '/crud/companhia-aerea'
 
+class InstanciaVooUpdateView(PermissionRequiredMixin, UpdateView):
+    model = InstanciaVoo
+    permission_required = "voos.change_instancia_voo"
+    fields = ['estado']
+    success_url = '/movimentacao'
 
 def index(request):
     context = {

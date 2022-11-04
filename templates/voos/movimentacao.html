@@ -35,6 +35,9 @@
                     <td>{{ instancia_voo.chegada_prevista }}</td>
                     <td>{{ instancia_voo.chegada_real }}</td>
                     <td>{{ instancia_voo.estado_atual.nome }}</td>
+                    <td class="d-flex justify-content-center">
+                        <a class="btn btn-secondary" href="/movimentacoes/atualizar/{{ instancia_voo.id }}">Alterar</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
