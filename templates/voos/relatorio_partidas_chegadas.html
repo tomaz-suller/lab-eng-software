@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+Relatório de partidas e chegadas
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid bg-primary pb-2">
+    <div class="container">
+        <h1 class="display-3 text-light">Relatório</h1>
+        <p class="lead text-light">Partidas e chegadas por companhia aérea para o período especificado.</p>
+    </div>
+</div>
+
+<div class="container mt-2">
+    <h2>Partidas</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Companhia aérea</th>
+            <th>Nº de partidas</th>
+        </tr>
+        {% for partida in partidas %}
+        <tr>
+            <td>{{ partida.voo__companhia_aerea__nome }}
+            <td>{{ partida.total }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Chegadas</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Companhia aérea</th>
+            <th>Nº de chegadas</th>
+        </tr>
+        {% for chegada in chegadas %}
+        <tr>
+            <td>{{ chegada.voo__companhia_aerea__nome }}
+            <td>{{ chegada.total }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

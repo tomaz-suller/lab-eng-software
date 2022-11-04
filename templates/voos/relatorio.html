@@ -14,14 +14,15 @@
         </div>
 
         <div class="container mt-3">
-            <form>
+            <form action="/relatorio/relatorio-partidas-chegadas" method="post">
+                {% csrf_token %}
                 <div class="form-group">
                 <label for="inputDataInicio">Data de início</label>
-                <input type="date" class="form-control" id="inputDataInicio">
+                <input type="date" class="form-control" id="inputDataInicio" name="inputDataInicio">
                 </div>
                 <div class="form-group">
                     <label for="inputDataFim">Data de fim</label>
-                    <input type="date" class="form-control" id="inputDataFim">
+                    <input type="date" class="form-control" id="inputDataFim" name="inputDataFim">
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Gerar Relatório de Partidas e Chegadas</button>
                 <button type="submit" class="btn btn-primary mt-3">Gerar Relatório de Movimentações</button>
