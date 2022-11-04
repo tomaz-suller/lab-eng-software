@@ -27,7 +27,7 @@ Companhia Aérea
         <div class="col-md mx-3 d-grid">
             <a class="btn btn-secondary" href="/crud/companhia-aerea/deletar">Deletar</a>
         </div>
-    </div>     
+    </div>
 </div>
 
 <div class="container-fluid p-5">
@@ -35,11 +35,15 @@ Companhia Aérea
         <tr>
             <th>Nome</th>
             <th>Sigla</th>
+            <th>Opções</th>
         </tr>
         {% for companhia_aerea in companhia_aerea_list %}
         <tr>
             <td>{{ companhia_aerea.nome }}</td>
             <td>{{ companhia_aerea.sigla }}</td>
+            <td class="d-flex justify-content-center">
+                <a class="btn btn-secondary" href="/crud/companhia-aerea/update/{{ companhia_aerea.id }}">Alterar</a>
+            </td>
         </tr>
         {% endfor %}
     </table>

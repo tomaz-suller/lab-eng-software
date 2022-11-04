@@ -15,4 +15,5 @@ urlpatterns = [
 
     path("crud/companhia-aerea/criar", views.CompanhiaAereaCreateView.as_view()),
     path("crud/companhia-aerea", views.CompanhiaAereaListView.as_view()),
+    path("crud/companhia-aerea/update/<int:pk>", views.CompanhiaAereaUpdateView.as_view()),
 ]
