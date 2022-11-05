@@ -69,6 +69,8 @@ def relatorio_partidas_chegadas(request):
     if request.POST:
         data_inicio = datetime.datetime.strptime(request.POST.get('inputDataInicio'), '%Y-%m-%d').date()
         data_fim = datetime.datetime.strptime(request.POST.get('inputDataFim'), '%Y-%m-%d').date()
+        str_data_inicio = data_inicio.strftime('%d/%m/%Y')
+        str_data_fim = data_fim.strftime('%d/%m/%Y')
 
         partidas = InstanciaVoo.objects.filter(
             partida_real__gte=data_inicio, partida_real__lte=data_fim
@@ -78,4 +80,9 @@ def relatorio_partidas_chegadas(request):
             chegada_real__gte=data_inicio, chegada_real__lte=data_fim
         ).values('voo__companhia_aerea__nome').annotate(total=Count('voo__companhia_aerea__nome')).order_by('total')
         
-        return render(request, 'voos/relatorio_partidas_chegadas.html', {'partidas': partidas, 'chegadas': chegadas})
+        return render(request, 'voos/relatorio_partidas_chegadas.html', {
+            'partidas': partidas,
+            'chegadas': chegadas,
+            'str_data_inicio': str_data_inicio,
+            'str_data_fim': str_data_fim
+        })
