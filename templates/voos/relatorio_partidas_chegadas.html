@@ -14,32 +14,39 @@ Relatório de partidas e chegadas
 </div>
 
 <div class="container mt-2">
-    <h2>Partidas</h2>
-    <table class="table table-striped">
-        <tr>
-            <th>Companhia aérea</th>
-            <th>Nº de partidas</th>
-        </tr>
-        {% for partida in partidas %}
-        <tr>
-            <td>{{ partida.voo__companhia_aerea__nome }}
-            <td>{{ partida.total }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <button class="btn btn-primary my-2" id="download">Imprimir</button>
+    <a class="btn btn-secondary my-2" href="/relatorio">Voltar</a>
+    <div id="relatorio">
+        <h2>Partidas</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia aérea</th>
+                <th>Nº de partidas</th>
+            </tr>
+            {% for partida in partidas %}
+            <tr>
+                <td>{{ partida.voo__companhia_aerea__nome }}
+                <td>{{ partida.total }}</td>
+            </tr>
+            {% endfor %}
+        </table>
 
-    <h2>Chegadas</h2>
-    <table class="table table-striped">
-        <tr>
-            <th>Companhia aérea</th>
-            <th>Nº de chegadas</th>
-        </tr>
-        {% for chegada in chegadas %}
-        <tr>
-            <td>{{ chegada.voo__companhia_aerea__nome }}
-            <td>{{ chegada.total }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <h2>Chegadas</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia aérea</th>
+                <th>Nº de chegadas</th>
+            </tr>
+            {% for chegada in chegadas %}
+            <tr>
+                <td>{{ chegada.voo__companhia_aerea__nome }}
+                <td>{{ chegada.total }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+<script src="{% static "pdf.js" %}"></script>
 {% endblock %}
