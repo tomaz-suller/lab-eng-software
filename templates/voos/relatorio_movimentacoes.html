@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+Relatório de movimentações
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid bg-primary pb-2">
+    <div class="container">
+        <h1 class="display-3 text-light">Relatório</h1>
+        <p class="lead text-light"> Resumo de movimentações no período especificado.</p>
+    </div>
+</div>
+
+<div class="container mt-2">
+    <button class="btn btn-primary my-2" id="download">Imprimir</button>
+    <a class="btn btn-secondary my-2" href="/relatorio">Voltar</a>
+    <div id="relatorio">
+        <h1>Relatório de movimentações</h1>
+        <h2>Período da busca</h2>
+        <p><b>Início:</b> {{ str_data_inicio }}</p>
+        <p><b>Fim:</b> {{ str_data_fim }}</p>
+        <table class="table table-striped">
+            <tr>
+                <th>Estado anterior</th>
+                <th>Estado posterior</th>
+                <th>Número de ocorrências</th>
+                <th>Duração média</th>
+            </tr>
+            {% for movimentacao in movimentacoes %}
+            <tr>
+                <td>{{ movimentacao.estado_anterior__nome }}</td>
+                <td>{{ movimentacao.estado_posterior__nome }}</td>
+                <td>{{ movimentacao.cont }}</td>
+                <td>{{ movimentacao.media_tempo }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+<script src="{% static "pdf.js" %}"></script>
+{% endblock %}

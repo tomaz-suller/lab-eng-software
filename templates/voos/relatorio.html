@@ -5,7 +5,6 @@
     </head>
 
     <body>
-
         <div class="jumbotron jumbotron-fluid bg-primary pb-2">
             <div class="container">
               <h1 class="display-3 text-light">Relatórios</h1>
@@ -14,6 +13,7 @@
         </div>
 
         <div class="container mt-3">
+            <h2>Selecione um período de tempo:</h2>
             <form action="/relatorio/relatorio-partidas-chegadas" method="post">
                 {% csrf_token %}
                 <div class="form-group">

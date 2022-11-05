@@ -2,10 +2,10 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.db.models import Count
+from django.db.models import Count, Avg
 
 from .forms import CompanhiaAereaForm
-from .models import CompanhiaAerea, Estado, InstanciaVoo
+from .models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao
 
 import datetime
 
@@ -83,6 +83,24 @@ def relatorio_partidas_chegadas(request):
         return render(request, 'voos/relatorio_partidas_chegadas.html', {
             'partidas': partidas,
             'chegadas': chegadas,
+            'str_data_inicio': str_data_inicio,
+            'str_data_fim': str_data_fim
+        })
+
+def relatorio_movimentacoes(request):
+
+    if request.POST:
+        data_inicio = datetime.datetime.strptime(request.POST.get('inputDataInicio'), '%Y-%m-%d').date()
+        data_fim = datetime.datetime.strptime(request.POST.get('inputDataFim'), '%Y-%m-%d').date()
+        str_data_inicio = data_inicio.strftime('%d/%m/%Y')
+        str_data_fim = data_fim.strftime('%d/%m/%Y')
+
+        movimentacoes = Movimentacao.objects.filter(
+            data_movimentacao__gte=data_inicio, data_movimentacao__lte=data_fim
+        ).values('estado_anterior__nome', 'estado_posterior__nome').annotate(cont=Count('estado_anterior__nome'), media_tempo=Avg('tempo_movimentacao')).order_by('cont')
+        
+        return render(request, 'voos/relatorio_movimentacoes.html', {
+            'movimentacoes': movimentacoes,
             'str_data_inicio': str_data_inicio,
             'str_data_fim': str_data_fim
         })

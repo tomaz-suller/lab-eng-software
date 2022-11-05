@@ -8,6 +8,7 @@ urlpatterns = [
     path("movimentacao/", views.movimentacao),
     path("relatorio/", views.relatorio),
     path("relatorio/relatorio-partidas-chegadas", views.relatorio_partidas_chegadas),
+    path("relatorio/relatorio-movimentacoes", views.relatorio_movimentacoes),
     path("estados/", views.EstadoListView.as_view()),
 
     path("movimentacao/atualizar/<int:pk>", views.InstanciaVooUpdateView.as_view()),
