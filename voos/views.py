@@ -49,10 +49,6 @@ def index(request):
     return render(request, "voos/index.html", context)
 
 
-def inicio(request):
-    return render(request, "voos/inicio.html")
-
-
 def crud(request):
     return render(request, "voos/crud.html")
 
