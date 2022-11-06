@@ -24,4 +24,60 @@
             </ul>
         </div>
     </nav>
+
+    <div class="container mt-3">
+        <h1>Aeroporto Internacional de São Paulo</h1>
+        <h5 id="data">
+            Data:
+        </h5>
+        <h5 id="hora">
+            Hora:
+        </h5>
+
+        <h2>Partidas</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Status</th>
+                <th>Destino</th>
+                <th>Partida Prevista</th>
+                <th>Partida Real</th>
+            </tr>
+            {% for partida in partidas %}
+            <tr>
+                <td>{{ partida.voo.companhia_aerea.nome }}
+                <td>{{ partida.voo.codigo }}</td>
+                <td>{{ partida.estado_atual.nome }}</td>
+                <td>{{ partida.voo.destino }}</td>
+                <td>{{ partida.partida_prevista }}</td>
+                <td>{{ partida.partida_real }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="container mt-3">
+        <h2>Chegadas</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Origem</th>
+                <th>Chegada Prevista</th>
+                <th>Chegada Real</th>
+            </tr>
+            {% for chegada in chegadas %}
+            <tr>
+                <td>{{ chegada.voo.companhia_aerea.nome }}
+                <td>{{ chegada.voo.codigo }}</td>
+                <td>{{ chegada.voo.origem }}</td>
+                <td>{{ chegada.chegada_prevista }}</td>
+                <td>{{ chegada.chegada_real }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script src="{% static "index_clock.js" %}"></script>
 {% endblock %}
