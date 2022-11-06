@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+Relatório de partidas e chegadas
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid bg-primary pb-2">
+    <div class="container">
+        <h1 class="display-3 text-light">Período inválido</h1>
+        <p class="lead text-light">Um período inválido foi selecionado, insira um período válido.</p>
+        <a class="btn btn-lg btn-secondary my-2" href="/relatorio">Voltar</a>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+<script src="{% static "pdf.js" %}"></script>
+{% endblock %}

@@ -21,6 +21,9 @@ Relatório de movimentações
         <h2>Período da busca</h2>
         <p><b>Início:</b> {{ str_data_inicio }}</p>
         <p><b>Fim:</b> {{ str_data_fim }}</p>
+
+        {% if movimentacoes|length < 1 %}Não ocorreram movimentações nesse período!
+        {% else %}
         <table class="table table-striped">
             <tr>
                 <th>Estado anterior</th>
@@ -37,6 +40,7 @@ Relatório de movimentações
             </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
 </div>
 

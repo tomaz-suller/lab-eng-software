@@ -52,10 +52,8 @@ def index(request):
     }
     return render(request, "voos/index.html", context)
 
-
 def crud(request):
     return render(request, "voos/crud.html")
-
 
 def movimentacao(request):
     instancia_voo_list = InstanciaVoo.objects.all()
@@ -67,8 +65,18 @@ def relatorio(request):
 def relatorio_partidas_chegadas(request):
 
     if request.POST:
-        data_inicio = datetime.datetime.strptime(request.POST.get('inputDataInicio'), '%Y-%m-%d').date()
-        data_fim = datetime.datetime.strptime(request.POST.get('inputDataFim'), '%Y-%m-%d').date()
+        data_inicio_raw = request.POST.get('inputDataInicio')
+        data_fim_raw = request.POST.get('inputDataFim')
+
+        if (not data_inicio_raw) or (not data_fim_raw):
+            return render(request, 'voos/aviso_data_invalida.html')
+
+        data_inicio = datetime.datetime.strptime(data_inicio_raw, '%Y-%m-%d').date()
+        data_fim = datetime.datetime.strptime(data_fim_raw, '%Y-%m-%d').date()
+
+        if data_fim<data_inicio:
+            return render(request, 'voos/aviso_data_invalida.html')
+
         str_data_inicio = data_inicio.strftime('%d/%m/%Y')
         str_data_fim = data_fim.strftime('%d/%m/%Y')
 
@@ -90,8 +98,18 @@ def relatorio_partidas_chegadas(request):
 def relatorio_movimentacoes(request):
 
     if request.POST:
-        data_inicio = datetime.datetime.strptime(request.POST.get('inputDataInicio'), '%Y-%m-%d').date()
-        data_fim = datetime.datetime.strptime(request.POST.get('inputDataFim'), '%Y-%m-%d').date()
+        data_inicio_raw = request.POST.get('inputDataInicio')
+        data_fim_raw = request.POST.get('inputDataFim')
+
+        if (not data_inicio_raw) or (not data_fim_raw):
+            return render(request, 'voos/aviso_data_invalida.html')
+
+        data_inicio = datetime.datetime.strptime(data_inicio_raw, '%Y-%m-%d').date()
+        data_fim = datetime.datetime.strptime(data_fim_raw, '%Y-%m-%d').date()
+
+        if data_fim<data_inicio:
+            return render(request, 'voos/aviso_data_invalida.html')
+            
         str_data_inicio = data_inicio.strftime('%d/%m/%Y')
         str_data_fim = data_fim.strftime('%d/%m/%Y')
 

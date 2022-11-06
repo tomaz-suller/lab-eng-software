@@ -22,6 +22,8 @@ Relatório de partidas e chegadas
         <p><b>Início:</b> {{ str_data_inicio }}</p>
         <p><b>Fim:</b> {{ str_data_fim }}</p>
         <h2>Partidas</h2>
+        {% if partidas|length < 1 %}Não ocorreram partidas nesse período!
+        {% else %}
         <table class="table table-striped">
             <tr>
                 <th>Companhia aérea</th>
@@ -34,8 +36,11 @@ Relatório de partidas e chegadas
             </tr>
             {% endfor %}
         </table>
+        {% endif %}
 
         <h2>Chegadas</h2>
+        {% if chegadas|length < 1 %}Não ocorreram chegadas nesse período!
+        {% else %}
         <table class="table table-striped">
             <tr>
                 <th>Companhia aérea</th>
@@ -48,6 +53,7 @@ Relatório de partidas e chegadas
             </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
 </div>
 
