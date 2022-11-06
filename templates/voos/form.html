@@ -1,35 +1,31 @@
 {% extends 'base.html' %}
+{% load get %}
 
 {% block title %}
-Companhia Aérea
+Criação e Modificação de {{ model_name|title }}
 {% endblock %}
 
 {% block content %}
 
 <div class="jumbotron jumbotron-fluid bg-primary pb-2">
     <div class="container d-flex justify-content-center">
-      <h1 class="display-3 text-light">Criar/Alterar Companhia Aérea</h1>
+      <h1 class="display-3 text-light">Criar ou Modificar {{ model_name|title }}</h1>
     </div>
 </div>
 
 <div class="container d-flex justify-content-center my-3">
     <form method="POST" enctype="multipart/form-data">
-
-        <!-- Security token -->
         {% csrf_token %}
 
-        <!-- Using the formset -->
-        <!-- {{ form.as_p }} -->
-
+        {% for field in form %}
         <div class="form-group mt-2">
-            {{ form.nome }}
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
         </div>
-        <div class="form-group mt-2">
-            {{ form.sigla }}
-        </div>
+        {% endfor %}
 
         <input class="btn btn-primary mt-2" type="submit" value="Submeter">
-        <a href="/crud/companhia-aerea">
+        <a href="/crud/{{ model_endpoint }}">
             <input class="btn btn-secondary mt-2" type="button" value="Voltar">
         </a>
     </form>

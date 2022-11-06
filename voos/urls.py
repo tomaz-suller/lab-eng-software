@@ -7,13 +7,36 @@ urlpatterns = [
     path("crud/", views.crud),
     path("movimentacao/", views.movimentacao),
     path("relatorio/", views.relatorio),
-    path("relatorio/relatorio-partidas-chegadas", views.relatorio_partidas_chegadas),
-    path("relatorio/relatorio-movimentacoes", views.relatorio_movimentacoes),
-    path("estados/", views.EstadoListView.as_view()),
-
+    path("relatorio/partidas-chegadas", views.relatorio_partidas_chegadas),
+    path("relatorio/movimentacoes", views.relatorio_movimentacoes),
     path("movimentacao/atualizar/<int:pk>", views.InstanciaVooUpdateView.as_view()),
-
-    path("crud/companhia-aerea/criar", views.CompanhiaAereaCreateView.as_view()),
-    path("crud/companhia-aerea", views.CompanhiaAereaListView.as_view()),
-    path("crud/companhia-aerea/update/<int:pk>", views.CompanhiaAereaUpdateView.as_view()),
 ]
+
+MODEL_ENDPOINTS = (
+    "companhia-aerea",
+    "voo",
+    "instancia-voo",
+)
+
+for model_endpoint in MODEL_ENDPOINTS:
+    model_class_name = "".join(word.title() for word in model_endpoint.split("-"))
+    urlpatterns.extend(
+        (
+            path(
+                f"crud/{model_endpoint}/criar",
+                getattr(views, f"{model_class_name}CreateView").as_view(),
+            ),
+            path(
+                f"crud/{model_endpoint}",
+                getattr(views, f"{model_class_name}ListView").as_view(),
+            ),
+            path(
+                f"crud/{model_endpoint}/alterar/<str:pk>",
+                getattr(views, f"{model_class_name}UpdateView").as_view(),
+            ),
+            path(
+                f"crud/{model_endpoint}/apagar/<str:pk>",
+                getattr(views, f"{model_class_name}DeleteView").as_view(),
+            ),
+        )
+    )

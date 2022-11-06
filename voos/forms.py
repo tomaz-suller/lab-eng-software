@@ -2,9 +2,9 @@ from django import forms
 from django.forms import TextInput
 
 from .models import CompanhiaAerea
- 
+
+
 class CompanhiaAereaForm(forms.ModelForm):
- 
     class Meta:
         model = CompanhiaAerea
         fields = [
@@ -13,14 +13,18 @@ class CompanhiaAereaForm(forms.ModelForm):
         ]
 
         widgets = {
-            'nome': TextInput(attrs={
-                'class': "form-control",
-                'style': 'max-width: 300px;',
-                'placeholder': 'Nome',
-            }),
-            'sigla': TextInput(attrs={
-                'class': "form-control",
-                'style': 'max-width: 300px;',
-               'placeholder': 'Sigla',
-            }),
+            "nome": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "style": "max-width: 300px;",
+                    "placeholder": "Nome",
+                }
+            ),
+            "sigla": TextInput(
+                attrs={
+                    "class": "form-control",
+                    "style": "max-width: 300px;",
+                    "placeholder": "Sigla",
+                }
+            ),
         }

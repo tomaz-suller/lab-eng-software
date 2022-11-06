@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <form method="post">{% csrf_token %}
+        <p>Você tem certeza de que deseja apagar "{{ object }}"?</p>
+        {{ form }}
+        <input class="btn btn-danger mt-2" type="submit" value="Confirmar">
+        <a href="/crud/companhia-aerea">
+            <input class="btn btn-secondary mt-2" type="button" value="Voltar">
+        </a>
+    </form>
+</div>
+{% endblock %}

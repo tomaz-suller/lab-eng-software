@@ -21,12 +21,6 @@ Companhia Aérea
         <div class="col-md mx-3 d-grid">
             <a class="btn btn-secondary" href="/crud/companhia-aerea/criar">Criar</a>
         </div>
-        <div class="col-md mx-3 d-grid">
-            <a class="btn btn-secondary" href="/crud/companhia-aerea/alterar">Alterar</a>
-        </div>
-        <div class="col-md mx-3 d-grid">
-            <a class="btn btn-secondary" href="/crud/companhia-aerea/deletar">Deletar</a>
-        </div>
     </div>
 </div>
 
@@ -42,7 +36,8 @@ Companhia Aérea
             <td>{{ companhia_aerea.nome }}</td>
             <td>{{ companhia_aerea.sigla }}</td>
             <td class="d-flex justify-content-center">
-                <a class="btn btn-secondary" href="/crud/companhia-aerea/update/{{ companhia_aerea.id }}">Alterar</a>
+                <a class="btn btn-secondary mx-1" href="/crud/companhia-aerea/alterar/{{ companhia_aerea.id }}">Alterar</a>
+                <a class="btn btn-danger mx-1" href="/crud/companhia-aerea/apagar/{{ companhia_aerea.id }}">Apagar</a>
             </td>
         </tr>
         {% endfor %}
