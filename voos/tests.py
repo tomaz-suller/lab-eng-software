@@ -281,6 +281,7 @@ class InstanciaVooViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
     ]
+    forbidden_credentials = []
     read_content = (
         "Instancia Voo",
         "Hora De Partida Prevista",
