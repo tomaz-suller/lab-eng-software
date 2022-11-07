@@ -14,7 +14,7 @@
 
         <div class="container mt-3">
             <h2>Selecione um período de tempo:</h2>
-            <form action="/relatorio/relatorio-partidas-chegadas" method="post">
+            <form action="/relatorio/partidas-chegadas" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                 <label for="inputDataInicio">Data de início</label>
@@ -25,7 +25,7 @@
                     <input type="date" class="form-control" id="inputDataFim" name="inputDataFim">
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Gerar Relatório de Partidas e Chegadas</button>
-                <button type="submit" class="btn btn-primary mt-3" formaction="/relatorio/relatorio-movimentacoes">Gerar Relatório de Movimentações</button>
+                <button type="submit" class="btn btn-primary mt-3" formaction="/relatorio/movimentacoes">Gerar Relatório de Movimentações</button>
             </form>
         </div>
 
