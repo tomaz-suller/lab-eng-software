@@ -4,6 +4,7 @@ from django.test import TestCase
 
 from voos.models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao, Voo
 
+from django.test import Client
 
 class MonitoramentoAvioesTestFixture(TestCase):
     @classmethod
@@ -25,6 +26,38 @@ class MonitoramentoAvioesTestFixture(TestCase):
             partida_real=None,
             chegada_prevista=departure_datetime + timedelta(hours=10),
             chegada_real=None,
+            estado_atual=cls.estado_voando,
+            voo=cls.voo,
+        )
+        cls.movimentacao = Movimentacao.objects.create(
+            data_movimentacao=departure_datetime,
+            tempo_movimentacao=None,
+            instancia_voo=cls.instancia_voo,
+            estado_anterior=cls.estado_autorizado,
+            estado_posterior=cls.estado_voando,
+        )
+        return super().setUpTestData()
+
+class RelatoriosTestFixture(TestCase):
+    @classmethod
+    def setUpTestData(cls) -> None:
+        departure_datetime = datetime(2022, 1, 1, 1, 0, tzinfo=timezone.utc)
+        cls.estado_autorizado = Estado.objects.create(nome="Autorizado")
+        cls.estado_voando = Estado.objects.create(nome="Em voo")
+        cls.companhia = CompanhiaAerea.objects.create(
+            nome="American Airlines", sigla="AA"
+        )
+        cls.voo = Voo.objects.create(
+            codigo="AA1234",
+            origem="GRU",
+            destino="SDU",
+            companhia_aerea=cls.companhia,
+        )
+        cls.instancia_voo = InstanciaVoo.objects.create(
+            partida_prevista=departure_datetime,
+            partida_real=departure_datetime,
+            chegada_prevista=departure_datetime + timedelta(hours=10),
+            chegada_real=departure_datetime + timedelta(hours=10),
             estado_atual=cls.estado_voando,
             voo=cls.voo,
         )
@@ -128,3 +161,53 @@ class InstanciaVooTest(MonitoramentoAvioesTestFixture):
         self.instancia_voo.delete()
         for movimentacao in movimentacao_set:
             self.assertFalse(Movimentacao.objects.contains(movimentacao))
+
+# Testes dos relatorios
+class RelatoriosTest(RelatoriosTestFixture):
+    client = Client()
+    def test_acesso(self):
+        response = self.client.get('/relatorio/')
+        self.assertTrue(response.status_code == 200)
+
+    def test_relatorio_partidas_chegadas(self):
+        response = self.client.post('/relatorio/relatorio-partidas-chegadas', {
+            'inputDataInicio':'2020-01-01',
+            'inputDataFim':'2022-12-01'
+        })
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(len(response.context['partidas']) == 1)
+        self.assertTrue(len(response.context['chegadas']) == 1)
+
+    def test_relatorio_movimentacoes(self):
+        response = self.client.post('/relatorio/relatorio-movimentacoes', {
+            'inputDataInicio':'2020-01-01',
+            'inputDataFim':'2022-12-01'
+        })
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(len(response.context['movimentacoes']) == 1)
+
+    def test_data_invalida(self):
+        response = self.client.post('/relatorio/relatorio-movimentacoes', {
+            'inputDataInicio':'2022-01-01',
+            'inputDataFim':'2020-12-01'
+        })
+        self.assertTrue(response.status_code == 200)
+        self.assertContains(response, "Período inválido")
+
+    def test_periodo_vazio(self):
+        response = self.client.post('/relatorio/relatorio-partidas-chegadas', {
+            'inputDataInicio':'2020-01-01',
+            'inputDataFim':'2020-01-01'
+        })
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(len(response.context['partidas']) == 0)
+        self.assertTrue(len(response.context['chegadas']) == 0)
+
+# Teste do indice
+class IndexTest(RelatoriosTestFixture):
+    client = Client()
+    def test_acesso(self):
+        response = self.client.get('/')
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(len(response.context['partidas']) == 1)
+        self.assertTrue(len(response.context['chegadas']) == 0)
