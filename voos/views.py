@@ -1,47 +1,130 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView, UpdateView
-from django.db.models import Count, Avg
-from django.utils import timezone
-
-from .forms import CompanhiaAereaForm
-from .models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao
-
 import datetime
+from typing import Any, Dict
+
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Avg, Count
+from django.shortcuts import redirect, render
+from django.utils import timezone
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+# from .forms import CompanhiaAereaForm
+from .models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao, Voo
 
 
-class EstadoListView(PermissionRequiredMixin, ListView):
-    model = Estado
-    permission_required = "voos.view_estado"
-    context_object_name = "estado_list"
+class BaseView:
+    context_object_name = "object_list"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["model_name"] = self.model._meta.verbose_name
+        context["model_fields"] = self.model._meta.fields
+        context["model_endpoint"] = context["model_name"].replace(" ", "-")
+        return context
 
 
-class CompanhiaAereaListView(PermissionRequiredMixin, ListView):
+class BaseCreateView(BaseView, CreateView):
+    template_name = "voos/form.html"
+
+
+class BaseListView(BaseView, ListView):
+    template_name = "voos/list.html"
+
+
+class BaseUpdateView(BaseView, UpdateView):
+    template_name = "voos/form.html"
+
+
+class BaseDeleteView(BaseView, DeleteView):
+    template_name = "voos/confirm_delete.html"
+
+
+class CompanhiaAereaListView(PermissionRequiredMixin, BaseListView):
     model = CompanhiaAerea
     permission_required = "voos.view_companhiaaerea"
-    permission_denied_message = "Permissão negada >:("
-    context_object_name = "companhia_aerea_list"
 
 
-class CompanhiaAereaCreateView(PermissionRequiredMixin, CreateView):
+class CompanhiaAereaCreateView(PermissionRequiredMixin, BaseCreateView):
     model = CompanhiaAerea
     permission_required = "voos.add_companhiaaerea"
-    form_class = CompanhiaAereaForm
+    fields = ["nome", "sigla"]
     success_url = "/crud/companhia-aerea"
 
 
-class CompanhiaAereaUpdateView(PermissionRequiredMixin, UpdateView):
+class CompanhiaAereaUpdateView(PermissionRequiredMixin, BaseUpdateView):
     model = CompanhiaAerea
     permission_required = "voos.change_companhiaaerea"
-    fields = ['nome', 'sigla']
-    success_url = '/crud/companhia-aerea'
+    fields = ["nome", "sigla"]
+    success_url = "/crud/companhia-aerea"
 
-class InstanciaVooUpdateView(PermissionRequiredMixin, UpdateView):
+
+class CompanhiaAereaDeleteView(PermissionRequiredMixin, BaseDeleteView):
+    model = CompanhiaAerea
+    permission_required = "voos.delete_companhiaaerea"
+    success_url = "/crud/companhia-aerea"
+
+
+class VooListView(PermissionRequiredMixin, BaseListView):
+    model = Voo
+    permission_required = "voos.view_voo"
+
+
+class VooCreateView(PermissionRequiredMixin, BaseCreateView):
+    model = Voo
+    permission_required = "voos.add_voo"
+    fields = ["codigo", "origem", "destino", "companhia_aerea"]
+    success_url = "/crud/voo"
+
+
+class VooUpdateView(PermissionRequiredMixin, BaseUpdateView):
+    model = Voo
+    permission_required = "voos.change_voo"
+    fields = ["codigo", "origem", "destino", "companhia_aerea"]
+    success_url = "/crud/voo"
+
+
+class VooDeleteView(PermissionRequiredMixin, BaseDeleteView):
+    model = Voo
+    permission_required = "voos.delete_companhiaaerea"
+    success_url = "/crud/voo"
+
+
+class InstanciaVooListView(PermissionRequiredMixin, BaseListView):
     model = InstanciaVoo
-    permission_required = "voos.change_instancia_voo"
-    fields = ['estado']
-    success_url = '/movimentacao'
+    permission_required = "voos.view_instanciavoo"
+
+
+class InstanciaVooCreateView(PermissionRequiredMixin, BaseCreateView):
+    model = InstanciaVoo
+    permission_required = "voos.add_instanciavoo"
+    fields = [
+        "partida_prevista",
+        "partida_real",
+        "chegada_prevista",
+        "chegada_real",
+        "voo",
+    ]
+    success_url = "/crud/instancia-voo"
+
+
+class InstanciaVooUpdateView(PermissionRequiredMixin, BaseUpdateView):
+    model = InstanciaVoo
+    permission_required = "voos.change_instanciavoo"
+    fields = [
+        "partida_prevista",
+        "partida_real",
+        "chegada_prevista",
+        "chegada_real",
+        "voo",
+    ]
+    success_url = "/crud/instancia-voo"
+
+
+class InstanciaVooDeleteView(PermissionRequiredMixin, BaseDeleteView):
+    model = InstanciaVoo
+    permission_required = "voos.delete_instanciavoo"
+    success_url = "/crud/instancia-voo"
+
 
 def index(request):
     partidas = InstanciaVoo.objects.filter(voo__origem="GRU")
@@ -49,96 +132,132 @@ def index(request):
     context = {
         "base_pages": ["crud", "movimentacao", "relatorio"],
         "partidas": partidas,
-        "chegadas": chegadas
+        "chegadas": chegadas,
     }
     return render(request, "voos/index.html", context)
+
 
 def crud(request):
     return render(request, "voos/crud.html")
 
+
 def movimentacao(request):
     instancia_voo_list = InstanciaVoo.objects.all()
-    return render(request, "voos/movimentacao.html", {"instancia_voo_list": instancia_voo_list})
+    return render(
+        request, "voos/movimentacao.html", {"instancia_voo_list": instancia_voo_list}
+    )
+
 
 def relatorio(request):
     return render(request, "voos/relatorio.html")
 
+
 def relatorio_partidas_chegadas(request):
 
     if request.POST:
-        data_inicio_raw = request.POST.get('inputDataInicio')
-        data_fim_raw = request.POST.get('inputDataFim')
+        data_inicio_raw = request.POST.get("inputDataInicio")
+        data_fim_raw = request.POST.get("inputDataFim")
 
         if (not data_inicio_raw) or (not data_fim_raw):
-            return render(request, 'voos/aviso_data_invalida.html')
+            return render(request, "voos/aviso_data_invalida.html")
 
-        data_inicio = datetime.datetime.strptime(data_inicio_raw, '%Y-%m-%d').date()
-        data_fim = datetime.datetime.strptime(data_fim_raw, '%Y-%m-%d').date()
+        data_inicio = datetime.datetime.strptime(data_inicio_raw, "%Y-%m-%d").date()
+        data_fim = datetime.datetime.strptime(data_fim_raw, "%Y-%m-%d").date()
 
-        if data_fim<data_inicio:
-            return render(request, 'voos/aviso_data_invalida.html')
+        if data_fim < data_inicio:
+            return render(request, "voos/aviso_data_invalida.html")
 
-        str_data_inicio = data_inicio.strftime('%d/%m/%Y')
-        str_data_fim = data_fim.strftime('%d/%m/%Y')
+        str_data_inicio = data_inicio.strftime("%d/%m/%Y")
+        str_data_fim = data_fim.strftime("%d/%m/%Y")
 
-        partidas = InstanciaVoo.objects.filter(
-            partida_real__gte=data_inicio, partida_real__lte=data_fim
-        ).values('voo__companhia_aerea__nome').annotate(total=Count('voo__companhia_aerea__nome')).order_by('total')
+        partidas = (
+            InstanciaVoo.objects.filter(
+                partida_real__gte=data_inicio, partida_real__lte=data_fim
+            )
+            .values("voo__companhia_aerea__nome")
+            .annotate(total=Count("voo__companhia_aerea__nome"))
+            .order_by("total")
+        )
 
-        chegadas = InstanciaVoo.objects.filter(
-            chegada_real__gte=data_inicio, chegada_real__lte=data_fim
-        ).values('voo__companhia_aerea__nome').annotate(total=Count('voo__companhia_aerea__nome')).order_by('total')
-        
-        return render(request, 'voos/relatorio_partidas_chegadas.html', {
-            'partidas': partidas,
-            'chegadas': chegadas,
-            'str_data_inicio': str_data_inicio,
-            'str_data_fim': str_data_fim
-        })
+        chegadas = (
+            InstanciaVoo.objects.filter(
+                chegada_real__gte=data_inicio, chegada_real__lte=data_fim
+            )
+            .values("voo__companhia_aerea__nome")
+            .annotate(total=Count("voo__companhia_aerea__nome"))
+            .order_by("total")
+        )
+
+        return render(
+            request,
+            "voos/relatorio_partidas_chegadas.html",
+            {
+                "partidas": partidas,
+                "chegadas": chegadas,
+                "str_data_inicio": str_data_inicio,
+                "str_data_fim": str_data_fim,
+            },
+        )
+
 
 def relatorio_movimentacoes(request):
 
     if request.POST:
-        data_inicio_raw = request.POST.get('inputDataInicio')
-        data_fim_raw = request.POST.get('inputDataFim')
+        data_inicio_raw = request.POST.get("inputDataInicio")
+        data_fim_raw = request.POST.get("inputDataFim")
 
         if (not data_inicio_raw) or (not data_fim_raw):
-            return render(request, 'voos/aviso_data_invalida.html')
+            return render(request, "voos/aviso_data_invalida.html")
 
-        data_inicio = datetime.datetime.strptime(data_inicio_raw, '%Y-%m-%d').date()
-        data_fim = datetime.datetime.strptime(data_fim_raw, '%Y-%m-%d').date()
+        data_inicio = datetime.datetime.strptime(data_inicio_raw, "%Y-%m-%d").date()
+        data_fim = datetime.datetime.strptime(data_fim_raw, "%Y-%m-%d").date()
 
-        if data_fim<data_inicio:
-            return render(request, 'voos/aviso_data_invalida.html')
-            
-        str_data_inicio = data_inicio.strftime('%d/%m/%Y')
-        str_data_fim = data_fim.strftime('%d/%m/%Y')
+        if data_fim < data_inicio:
+            return render(request, "voos/aviso_data_invalida.html")
 
-        movimentacoes = Movimentacao.objects.filter(
-            data_movimentacao__gte=data_inicio, data_movimentacao__lte=data_fim
-        ).values('estado_anterior__nome', 'estado_posterior__nome').annotate(cont=Count('estado_anterior__nome'), media_tempo=Avg('tempo_movimentacao')).order_by('cont')
-        
-        return render(request, 'voos/relatorio_movimentacoes.html', {
-            'movimentacoes': movimentacoes,
-            'str_data_inicio': str_data_inicio,
-            'str_data_fim': str_data_fim
-        })
+        str_data_inicio = data_inicio.strftime("%d/%m/%Y")
+        str_data_fim = data_fim.strftime("%d/%m/%Y")
+
+        movimentacoes = (
+            Movimentacao.objects.filter(
+                data_movimentacao__gte=data_inicio, data_movimentacao__lte=data_fim
+            )
+            .values("estado_anterior__nome", "estado_posterior__nome")
+            .annotate(
+                cont=Count("estado_anterior__nome"),
+                media_tempo=Avg("tempo_movimentacao"),
+            )
+            .order_by("cont")
+        )
+
+        return render(
+            request,
+            "voos/relatorio_movimentacoes.html",
+            {
+                "movimentacoes": movimentacoes,
+                "str_data_inicio": str_data_inicio,
+                "str_data_fim": str_data_fim,
+            },
+        )
+
 
 def movimentacao_detail(request, pk):
     instancia_voo = InstanciaVoo.objects.get(id=pk)
     estados = Estado.objects.all()
 
-    return render(request, 'voos/movimentacao_detail.html', {
-        'instancia_voo':instancia_voo,
-        'estados':estados
-    })
+    return render(
+        request,
+        "voos/movimentacao_detail.html",
+        {"instancia_voo": instancia_voo, "estados": estados},
+    )
+
 
 def movimentacao_confirmado(request):
-    id_instancia_voo = int(request.POST.get('identificador'))
+    id_instancia_voo = int(request.POST.get("identificador"))
     instancia_voo = InstanciaVoo.objects.get(id=id_instancia_voo)
-    novo_estado_str = request.POST.get('estado')
+    novo_estado_str = request.POST.get("estado")
     novo_estado = Estado.objects.get(nome=novo_estado_str)
-    estado_anterior_str = request.POST.get('estado_anterior')
+    estado_anterior_str = request.POST.get("estado_anterior")
     estado_anterior = Estado.objects.get(nome=estado_anterior_str)
 
     # Atualiza voo
@@ -146,9 +265,11 @@ def movimentacao_confirmado(request):
     instancia_voo.save()
 
     # Cria novo objeto movimentacao
-    ultima_mov = Movimentacao.objects.filter(instancia_voo__id=instancia_voo.id).order_by('-data_movimentacao')[0]
+    ultima_mov = Movimentacao.objects.filter(
+        instancia_voo__id=instancia_voo.id
+    ).order_by("-data_movimentacao")[0]
     timedelta = timezone.now() - ultima_mov.data_movimentacao
-    movimentacao = Movimentacao.objects.create(
+    Movimentacao.objects.create(
         data_movimentacao=datetime.datetime.now(),
         tempo_movimentacao=timedelta,
         instancia_voo=instancia_voo,
@@ -156,4 +277,4 @@ def movimentacao_confirmado(request):
         estado_posterior=novo_estado,
     )
 
-    return redirect('/')
+    return redirect("/")

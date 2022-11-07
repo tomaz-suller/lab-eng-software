@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-fb&m_y1g9t6znsn#!re4^$-4^*e=z#29q98fpyf4t)jp(7cz-(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["testserver", "localhost", "127.0.0.1"]
 
 # Application definition
 
@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "pt-br"
 
 TIME_ZONE = "UTC"
 
@@ -126,3 +126,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/accounts/login"
+
+USE_L10N = False
+DATETIME_FORMAT = "j/n/Y H:i"
+DATETIME_INPUT_FORMAT = [
+    "%Y-%m-%d %H:%M",  # '2006-10-25 14:30'
+    "%d/%m/%y %H:%M",  # '25/10/06 14:30'
+    "%d/%m/%Y %H:%M",  # '25/10/2006 14:30'
+]
