@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Count, Avg
+from django.utils import timezone
 
 from .forms import CompanhiaAereaForm
 from .models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao
@@ -122,3 +123,37 @@ def relatorio_movimentacoes(request):
             'str_data_inicio': str_data_inicio,
             'str_data_fim': str_data_fim
         })
+
+def movimentacao_detail(request, pk):
+    instancia_voo = InstanciaVoo.objects.get(id=pk)
+    estados = Estado.objects.all()
+
+    return render(request, 'voos/movimentacao_detail.html', {
+        'instancia_voo':instancia_voo,
+        'estados':estados
+    })
+
+def movimentacao_confirmado(request):
+    id_instancia_voo = int(request.POST.get('identificador'))
+    instancia_voo = InstanciaVoo.objects.get(id=id_instancia_voo)
+    novo_estado_str = request.POST.get('estado')
+    novo_estado = Estado.objects.get(nome=novo_estado_str)
+    estado_anterior_str = request.POST.get('estado_anterior')
+    estado_anterior = Estado.objects.get(nome=estado_anterior_str)
+
+    # Atualiza voo
+    instancia_voo.estado_atual = novo_estado
+    instancia_voo.save()
+
+    # Cria novo objeto movimentacao
+    ultima_mov = Movimentacao.objects.filter(instancia_voo__id=instancia_voo.id).order_by('-data_movimentacao')[0]
+    timedelta = timezone.now() - ultima_mov.data_movimentacao
+    movimentacao = Movimentacao.objects.create(
+        data_movimentacao=datetime.datetime.now(),
+        tempo_movimentacao=timedelta,
+        instancia_voo=instancia_voo,
+        estado_anterior=estado_anterior,
+        estado_posterior=novo_estado,
+    )
+
+    return redirect('/')

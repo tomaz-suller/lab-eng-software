@@ -13,10 +13,6 @@
             </div>
         </div>
 
-        <div class="container">
-            Listagem de voos
-        </div>
-
         <div class="container-fluid p-5">
             <table class="table table-striped table-hover">
                 <tr>
@@ -36,7 +32,7 @@
                     <td>{{ instancia_voo.chegada_real }}</td>
                     <td>{{ instancia_voo.estado_atual.nome }}</td>
                     <td class="d-flex justify-content-center">
-                        <a class="btn btn-secondary" href="/movimentacoes/atualizar/{{ instancia_voo.id }}">Alterar</a>
+                        <a class="btn btn-secondary" href="/movimentacao/atualizar/{{ instancia_voo.id }}">Atualizar</a>
                     </td>
                 </tr>
                 {% endfor %}

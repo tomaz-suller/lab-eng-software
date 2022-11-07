@@ -11,7 +11,8 @@ urlpatterns = [
     path("relatorio/relatorio-movimentacoes", views.relatorio_movimentacoes),
     path("estados/", views.EstadoListView.as_view()),
 
-    path("movimentacao/atualizar/<int:pk>", views.InstanciaVooUpdateView.as_view()),
+    path("movimentacao/atualizar/<int:pk>", views.movimentacao_detail),
+    path("movimentacao/atualizar/confirmado", views.movimentacao_confirmado),
 
     path("crud/companhia-aerea/criar", views.CompanhiaAereaCreateView.as_view()),
     path("crud/companhia-aerea", views.CompanhiaAereaListView.as_view()),
