@@ -43,8 +43,8 @@ class InstanciaVooUpdateView(PermissionRequiredMixin, UpdateView):
     success_url = '/movimentacao'
 
 def index(request):
-    partidas = InstanciaVoo.objects.filter(voo__origem="São Paulo")
-    chegadas = InstanciaVoo.objects.filter(voo__destino="São Paulo")
+    partidas = InstanciaVoo.objects.filter(voo__origem="GRU")
+    chegadas = InstanciaVoo.objects.filter(voo__destino="GRU")
     context = {
         "base_pages": ["crud", "movimentacao", "relatorio"],
         "partidas": partidas,
