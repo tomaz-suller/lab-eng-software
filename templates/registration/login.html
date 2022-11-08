@@ -4,7 +4,7 @@
 
 {% include 'header.html' with return_url='/' name='Login' only %}
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center mt-3">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

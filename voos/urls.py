@@ -4,9 +4,9 @@ from . import views
 
 urlpatterns = [
     path("", views.index),
-    path("crud", views.crud),
-    path("movimentacao", views.movimentacao),
-    path("relatorio", views.relatorio),
+    path("crud/", views.crud),
+    path("movimentacao/", views.movimentacao),
+    path("relatorio/", views.relatorio),
     path("relatorio/partidas-chegadas", views.relatorio_partidas_chegadas),
     path("relatorio/movimentacoes", views.relatorio_movimentacoes),
     path("movimentacao/atualizar/<int:pk>", views.movimentacao_detail),
