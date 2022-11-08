@@ -12,7 +12,7 @@ function showTime(){
     min = ("0" + min).slice(-2);
     sec = ("0" + sec).slice(-2);
 
-    document.getElementById("data").innerHTML = "Data: "+date+"/"+month+"/"+year;
+    document.getElementById("data").innerHTML = "Data: "+date+"/"+(month+1)+"/"+year;
     document.getElementById("hora").innerHTML = "Hora: "+hour+":"+min+":"+sec;
 }
 setInterval(showTime,1000);
