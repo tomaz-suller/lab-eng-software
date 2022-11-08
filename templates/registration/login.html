@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="jumbotron jumbotron-fluid bg-primary pb-2 mb-3">
-    <div class="container">
-      <h1 class="display-3 text-light">Login</h1>
-    </div>
-</div>
+
+{% include 'header.html' with return_url='/' name='Login' only %}
 
 <div class="d-flex justify-content-center">
     <form method="post">

@@ -6,12 +6,8 @@ CRUD
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron jumbotron-fluid bg-primary pb-2">
-    <div class="container">
-        <h1 class="display-3 text-light">CRUD</h1>
-        <p class="lead text-light">Interface de cadastro, consulta, modificação e deleção de registros.</p>
-    </div>
-</div>
+
+{% include 'header.html' with return_url='/' name='CRUD' description='Interface de cadastro, consulta, modificação e deleção de registros.' %}
 
 <div class="container">
     <div class="row">
