@@ -67,6 +67,20 @@ Em seguida selecione o item "Login". Nessa opção, pode-se autenticar com os us
 
 De acordo com o usuário autenticado, as opções disponíveis mudam no menu principal.
 
+### Teste de módulos
+Para realizar o teste dos módulos, é necessário carregar o dataset com dados suficientes para gerar relatórios e movimentações:
+```
+python manage.py loaddata db_teste_relatorios.json
+```
+Em seguida, o servidor pode ser executado com:
+```
+python manage.py runserver
+```
+Testes unitários também estão disponíveis através de:
+```
+python manage.py test
+```
+
 ## Desenvolvimento
 Existem requisitos de Python adicionais para desenvolvimento, que devem ser instaldos de `requirements/development.txt`:
 ```
