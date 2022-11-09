@@ -383,7 +383,7 @@ class RelatoriosTestFixture(TestCase):
 
 class RelatoriosTest(RelatoriosTestFixture):
     def test_acesso(self):
-        response = self.client.get("/relatorio")
+        response = self.client.get("/relatorio/")
         self.assertTrue(response.status_code == 200)
 
     def test_relatorio_partidas_chegadas(self):
@@ -427,3 +427,18 @@ class IndexTest(RelatoriosTestFixture):
         self.assertTrue(response.status_code == 200)
         self.assertTrue(len(response.context["partidas"]) == 1)
         self.assertTrue(len(response.context["chegadas"]) == 0)
+
+class MovimentacaoInterfaceTest(RelatoriosTestFixture):
+
+    def test_acesso(self):
+        response = self.client.get(
+            "/movimentacao/",
+        )
+        self.assertTrue(response.status_code == 200)
+
+    def test_acesso_detail(self):
+        response = self.client.get(
+            "/movimentacao/atualizar/1",
+        )
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(response.context["instancia_voo"].id == 1)
