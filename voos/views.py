@@ -244,10 +244,23 @@ def relatorio_movimentacoes(request):
             },
         )
 
+state_permission_dict = {'Aterissado': ['Embarcando']}
 
 def movimentacao_detail(request, pk):
+    state_permission_dict = {
+        'Aterissado': ['Aterissado','Embarcando', 'Cancelado'],
+        'Embarcando': ['Embarcando','Programado'],
+        'Programado': ['Programado','Taxiando'],
+        'Taxiando': ['Taxiando','Pronto'],
+        'Pronto': ['Pronto', 'Autorizado'],
+        'Autorizado': ['Autorizado','Em voo'],
+        'Em voo': ['Em voo','Aterissado'],
+        'Cancelado': ['Cancelado']
+    }
+
     instancia_voo = InstanciaVoo.objects.get(id=pk)
-    estados = Estado.objects.all()
+    estado_atual = instancia_voo.estado_atual.nome
+    estados = Estado.objects.filter(nome__in=state_permission_dict[estado_atual])
 
     return render(
         request,
@@ -263,6 +276,9 @@ def movimentacao_confirmado(request):
     novo_estado = Estado.objects.get(nome=novo_estado_str)
     estado_anterior_str = request.POST.get("estado_anterior")
     estado_anterior = Estado.objects.get(nome=estado_anterior_str)
+
+    if estado_anterior == novo_estado:
+        return redirect('/movimentacao/')
 
     # Atualiza voo
     instancia_voo.estado_atual = novo_estado
@@ -281,4 +297,4 @@ def movimentacao_confirmado(request):
         estado_posterior=novo_estado,
     )
 
-    return redirect("/")
+    return redirect("/movimentacao/")
