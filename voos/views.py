@@ -7,9 +7,8 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.http import JsonResponse, HttpResponse
 
-# from .forms import CompanhiaAereaForm
+from .forms import InstanciaVooUpdateForm, InstanciaVooCreateForm
 from .models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao, Voo
 
 
@@ -98,26 +97,14 @@ class InstanciaVooListView(PermissionRequiredMixin, BaseListView):
 class InstanciaVooCreateView(PermissionRequiredMixin, BaseCreateView):
     model = InstanciaVoo
     permission_required = "voos.add_instanciavoo"
-    fields = [
-        "partida_prevista",
-        "partida_real",
-        "chegada_prevista",
-        "chegada_real",
-        "voo",
-    ]
+    form_class = InstanciaVooCreateForm
     success_url = "/crud/instancia-voo"
 
 
 class InstanciaVooUpdateView(PermissionRequiredMixin, BaseUpdateView):
     model = InstanciaVoo
     permission_required = "voos.change_instanciavoo"
-    fields = [
-        "partida_prevista",
-        "partida_real",
-        "chegada_prevista",
-        "chegada_real",
-        "voo",
-    ]
+    form_class = InstanciaVooUpdateForm
     success_url = "/crud/instancia-voo"
 
 
@@ -137,9 +124,10 @@ def index(request):
     }
     return render(request, "voos/index.html", context)
 
+
 def lockout(request, credentials, *args, **kwargs):
     return render(request, "voos/lockout.html")
-    return HttpResponse("", status=403)
+
 
 def crud(request):
     return render(request, "voos/crud.html")

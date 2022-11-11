@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 
 class Estado(models.Model):
@@ -13,7 +14,10 @@ class Estado(models.Model):
 
 class CompanhiaAerea(models.Model):
     nome = models.CharField(max_length=100, verbose_name="nome")
-    sigla = models.CharField(max_length=5, verbose_name="sigla")
+    sigla = models.CharField(
+        max_length=5, verbose_name="sigla",
+        validators=[RegexValidator(r"[A-Z]{3}", "Sigla da companhia aérea deve ser composta de três caracteres maiúsculos.")]
+    )
 
     def __str__(self) -> str:
         return f"Companhia aérea {self.nome} ({self.sigla})"
@@ -23,7 +27,10 @@ class CompanhiaAerea(models.Model):
 
 
 class Voo(models.Model):
-    codigo = models.CharField(max_length=6, primary_key=True, verbose_name="código")
+    codigo = models.CharField(
+        max_length=6, primary_key=True, verbose_name="código",
+        validators=[RegexValidator(r"[A-Z]{2}[0-9]{4}", "Código de voo deve ser composto de dois caracteres maiúsculos seguidos de quatro dígitos.")]
+    )
     origem = models.CharField(max_length=100, verbose_name="origem")
     destino = models.CharField(max_length=100, verbose_name="destino")
     companhia_aerea = models.ForeignKey(
