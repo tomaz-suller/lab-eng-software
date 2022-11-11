@@ -21,9 +21,19 @@ Movimentações
         <tr>
             <td>{{ instancia_voo.voo.codigo }}</td>
             <td>{{ instancia_voo.partida_prevista }}</td>
-            <td>{{ instancia_voo.partida_real }}</td>
+            <td>
+                {% if instancia_voo.partida_real == None %}
+                {% else %}
+                {{ instancia_voo.partida_real }}
+                {% endif %}
+            </td>
             <td>{{ instancia_voo.chegada_prevista }}</td>
-            <td>{{ instancia_voo.chegada_real }}</td>
+            <td>
+                {% if instancia_voo.chegada_real == None %}
+                {% else %}
+                {{ instancia_voo.chegada_real }}
+                {% endif %}
+            </td>
             <td>{{ instancia_voo.estado_atual.nome }}</td>
             <td class="d-flex justify-content-center">
                 <a class="btn btn-secondary" href="/movimentacao/atualizar/{{ instancia_voo.id }}">Atualizar</a>

@@ -277,18 +277,26 @@ def movimentacao_confirmado(request):
     estado_anterior_str = request.POST.get("estado_anterior")
     estado_anterior = Estado.objects.get(nome=estado_anterior_str)
 
-    if estado_anterior == novo_estado:
+    if estado_anterior_str == novo_estado_str:
         return redirect('/movimentacao/')
 
     # Atualiza voo
     instancia_voo.estado_atual = novo_estado
+    if novo_estado_str == 'Aterissado':
+        instancia_voo.chegada_real = timezone.now()
+    elif novo_estado_str == 'Em voo':
+        instancia_voo.partida_real = timezone.now()
     instancia_voo.save()
 
     # Cria novo objeto movimentacao
-    ultima_mov = Movimentacao.objects.filter(
+    lista_movs = Movimentacao.objects.filter(
         instancia_voo__id=instancia_voo.id
-    ).order_by("-data_movimentacao")[0]
-    timedelta = timezone.now() - ultima_mov.data_movimentacao
+    ).order_by("-data_movimentacao")
+
+    if(len(lista_movs) > 0):
+        timedelta = timezone.now() - lista_movs[0].data_movimentacao
+    else:
+        timedelta = None
     Movimentacao.objects.create(
         data_movimentacao=datetime.datetime.now(),
         tempo_movimentacao=timedelta,
