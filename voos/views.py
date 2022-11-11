@@ -298,7 +298,7 @@ def movimentacao_confirmado(request):
     else:
         timedelta = None
     Movimentacao.objects.create(
-        data_movimentacao=datetime.datetime.now(),
+        data_movimentacao=timezone.now(),
         tempo_movimentacao=timedelta,
         instancia_voo=instancia_voo,
         estado_anterior=estado_anterior,

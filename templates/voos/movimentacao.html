@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load tz %}
 {% block title %}
 Movimentações
 {% endblock %}
@@ -20,18 +21,18 @@ Movimentações
         {% for instancia_voo in instancia_voo_list %}
         <tr>
             <td>{{ instancia_voo.voo.codigo }}</td>
-            <td>{{ instancia_voo.partida_prevista }}</td>
+            <td>{{ instancia_voo.partida_prevista|timezone:"America/Sao_Paulo" }}</td>
             <td>
                 {% if instancia_voo.partida_real == None %}
                 {% else %}
-                {{ instancia_voo.partida_real }}
+                {{ instancia_voo.partida_real|timezone:"America/Sao_Paulo" }}
                 {% endif %}
             </td>
-            <td>{{ instancia_voo.chegada_prevista }}</td>
+            <td>{{ instancia_voo.chegada_prevista|timezone:"America/Sao_Paulo" }}</td>
             <td>
                 {% if instancia_voo.chegada_real == None %}
                 {% else %}
-                {{ instancia_voo.chegada_real }}
+                {{ instancia_voo.chegada_real|timezone:"America/Sao_Paulo" }}
                 {% endif %}
             </td>
             <td>{{ instancia_voo.estado_atual.nome }}</td>

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load voos_auth %}
 {% load static %}
+{% load tz %}
 
 {% block content %}
     <nav class="navbar navbar-expand-lg navbar-primary bg-primary">
@@ -50,11 +51,11 @@
                 <td>{{ partida.voo.codigo }}</td>
                 <td>{{ partida.estado_atual.nome }}</td>
                 <td>{{ partida.voo.destino }}</td>
-                <td>{{ partida.partida_prevista }}</td>
+                <td>{{ partida.partida_prevista|timezone:"America/Sao_Paulo" }}</td>
                 <td>
                     {% if partida.partida_real == None %}
                     {% else %}
-                    {{ partida.partida_real }}
+                    {{ partida.partida_real|timezone:"America/Sao_Paulo" }}
                     {% endif %}
                 </td>
             </tr>
@@ -77,11 +78,11 @@
                 <td>{{ chegada.voo.companhia_aerea.nome }}
                 <td>{{ chegada.voo.codigo }}</td>
                 <td>{{ chegada.voo.origem }}</td>
-                <td>{{ chegada.chegada_prevista }}</td>
+                <td>{{ chegada.chegada_prevista |timezone:"America/Sao_Paulo" }}</td>
                 <td>
                     {% if chegada.chegada_real == None %}
                     {% else %}
-                    {{ chegada.chegada_real }}
+                    {{ chegada.chegada_real|timezone:"America/Sao_Paulo" }}
                     {% endif %}
                 </td>
             </tr>
