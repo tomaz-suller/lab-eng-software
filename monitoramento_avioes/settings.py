@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "voos",
+
+    'axes', # Bloqueio de login
 ]
 
 MIDDLEWARE = [
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'axes.middleware.AxesMiddleware', # Axes
 ]
 
 ROOT_URLCONF = "monitoramento_avioes.urls"
@@ -100,6 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+   'axes.backends.AxesBackend', # Axes must be first
+   'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -134,3 +141,8 @@ DATETIME_INPUT_FORMAT = [
     "%d/%m/%y %H:%M",  # '25/10/06 14:30'
     "%d/%m/%Y %H:%M",  # '25/10/2006 14:30'
 ]
+
+AXES_FAILURE_LIMIT = 3
+AXES_COOLOFF_TIME = 1
+AXES_RESET_ON_SUCCESS = True
+AXES_LOCKOUT_CALLABLE = "voos.views.lockout"

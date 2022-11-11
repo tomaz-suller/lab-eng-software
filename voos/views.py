@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.http import JsonResponse, HttpResponse
 
 # from .forms import CompanhiaAereaForm
 from .models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao, Voo
@@ -136,6 +137,9 @@ def index(request):
     }
     return render(request, "voos/index.html", context)
 
+def lockout(request, credentials, *args, **kwargs):
+    return render(request, "voos/lockout.html")
+    return HttpResponse("", status=403)
 
 def crud(request):
     return render(request, "voos/crud.html")

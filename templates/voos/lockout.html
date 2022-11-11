@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+Período inválido
+{% endblock %}
+
+{% block content %}
+
+{% include 'header.html' with return_url='/' name='Acesso Bloqueado' description='O acesso foi bloqueado devido a muitas tentativas falhas de acesso, aguarde para tentar novamente.' %}
+
+{% endblock %}
