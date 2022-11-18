@@ -64,6 +64,8 @@ Em seguida selecione o item "Login". Nessa opção, pode-se autenticar com os us
 - Usuário: **piloto**. Senha: **senha-do-piloto**. Tem acesso apenas a movimentações e alguns itens do CRUD.
 - Usuário: **gerente**. Senha: **senha-do-gerente**. Tem acesso a alguns itens do CRUD, movimentações e relatórios.
 - Usuário: **admin**. Senha: **admin**. Super-usuário de administração do sistema, tem acesso a todas as funcionalidades do sistema.
+- Usuário: **operador**. Senha: **senha-do-operador**. Tem acesso aos itens do CRUD;
+- Usuário: **torre**. Senha: **senha-da-torre**. Tem acesso aos itens das movimentações;
 
 De acordo com o usuário autenticado, as opções disponíveis mudam no menu principal.
 

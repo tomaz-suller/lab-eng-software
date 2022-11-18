@@ -255,9 +255,11 @@ class CompanhiaAereaViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
     url = "/crud/companhia-aerea"
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
+        {"username": "operador", "password": "senha-do-operador"},
     ]
     forbidden_credentials = [
         {"username": "piloto", "password": "senha-do-piloto"},
+        {"username": "torre", "password": "senha-da-torre"},
     ]
     read_content = (
         "Companhia Aerea",
@@ -280,8 +282,11 @@ class InstanciaVooViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
     url = "/crud/instancia-voo"
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
+        {"username": "operador", "password": "senha-do-operador"},
     ]
-    forbidden_credentials = []
+    forbidden_credentials = [
+        {"username": "torre", "password": "senha-da-torre"},
+    ]
     read_content = (
         "Instancia Voo",
         "Hora De Partida Prevista",
