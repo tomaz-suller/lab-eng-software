@@ -49,8 +49,7 @@ Antes de executar a aplicação, é necessário realizar a configuração do ban
 python manage.py migrate
 ```
 
-### Teste de navegação
-Inicialmente, é necessário carregar o dump disponível no repositório para carregar os usuários de teste:
+Também é necessário carregar o dump disponível no repositório para carregar os usuários de teste:
 ```
 python manage.py loaddata db.json
 ```
@@ -70,19 +69,15 @@ Em seguida selecione o item "Login". Nessa opção, pode-se autenticar com os us
 
 De acordo com o usuário autenticado, as opções disponíveis mudam no menu principal.
 
-### Teste de módulos
-Para realizar o teste dos módulos, é necessário carregar o dataset com dados suficientes para gerar relatórios e movimentações:
+### Desbloqueio após senha incorretas
+
+Após 3 tentativas incorretas de login, o acesso ao sistema é bloqueado. Para desbloqueá-lo é necessário parar o servidor em execução e executar o comando
 ```
-python manage.py loaddata db_teste_relatorios.json
+python manage.py axes_reset
 ```
-Em seguida, o servidor pode ser executado com:
-```
-python manage.py runserver
-```
-Testes unitários também estão disponíveis através de:
-```
-python manage.py test
-```
+Em seguida, é possível reiniciar o servidor e continuar a usar o serviço.
+
+
 
 ## Desenvolvimento
 Existem requisitos de Python adicionais para desenvolvimento, que devem ser instaldos de `requirements/development.txt`:
