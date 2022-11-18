@@ -50,5 +50,4 @@ class InstanciaVooUpdateForm(InstanciaVooForm):
             "chegada_prevista",
             "partida_real",
             "chegada_real",
-            "voo",
         ]
