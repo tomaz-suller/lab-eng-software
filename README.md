@@ -66,6 +66,7 @@ Em seguida selecione o item "Login". Nessa opção, pode-se autenticar com os us
 - Usuário: **admin**. Senha: **admin**. Super-usuário de administração do sistema, tem acesso a todas as funcionalidades do sistema.
 - Usuário: **operador**. Senha: **senha-do-operador**. Tem acesso aos itens do CRUD;
 - Usuário: **torre**. Senha: **senha-da-torre**. Tem acesso aos itens das movimentações;
+- Usuário: **funcionario**. Senha: **senha-do-func**. Tem acesso aos itens das movimentações;
 
 De acordo com o usuário autenticado, as opções disponíveis mudam no menu principal.
 
