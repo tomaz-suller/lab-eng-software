@@ -164,7 +164,8 @@ class ViewTestFixture:
     fixtures = ["db.json"]
 
     def setUp(self):
-        self.client.login(username="admin", password="admin")
+        with self.settings(AXES_ENABLED=False):
+            self.client.login(username="admin", password="admin")
         self.url = CrudUrls(self.url)
 
     def _create(self, payload: Dict[str, str]):
@@ -198,7 +199,8 @@ class ViewTestFixture:
             self.allowed_credentials + self.forbidden_credentials, expected_status_codes
         ):
             with self.subTest(username=credentials["username"]):
-                self.client.login(**credentials)
+                with self.settings(AXES_ENABLED=False):
+                    self.client.login(**credentials)
                 response = self._read()
                 self.assertEquals(response.status_code, expected_status_code)
 
@@ -238,26 +240,17 @@ class ViewTestFixture:
                 *self.update_content.values(),
             )
 
-    def test_delete(self):
-        pk = self.delete_pk or "1"
-        response = self._delete(pk)
-        self.assertEquals(response.status_code, 302)  # 302: Redirect
-        self.assertEquals(response.url, self.url.read)
-
-    @expectedFailure
-    def test_delete_removes_content(self):
-        self.test_delete()
-        response = self._read()
-        self._test_in_rendered_page(response, *self.read_content)
-
 
 class CompanhiaAereaViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
+# class Foo:
     url = "/crud/companhia-aerea"
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
-        {"username": "operador", "password": "senha-do-operador"},
+        {"username": "gerente", "password": "senha-do-gerente"},
     ]
     forbidden_credentials = [
+        {"username": "operador", "password": "senha-do-operador"},
+        {"username": "funcionario", "password": "senha-do-func"},
         {"username": "piloto", "password": "senha-do-piloto"},
         {"username": "torre", "password": "senha-da-torre"},
     ]
@@ -279,14 +272,17 @@ class CompanhiaAereaViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
 
 
 class InstanciaVooViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
+# class Bar:
     url = "/crud/instancia-voo"
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
         {"username": "operador", "password": "senha-do-operador"},
-    ]
-    forbidden_credentials = [
+        {"username": "funcionario", "password": "senha-do-func"},
+        {"username": "piloto", "password": "senha-do-piloto"},
         {"username": "torre", "password": "senha-da-torre"},
+        {"username": "gerente", "password": "senha-do-gerente"},
     ]
+    forbidden_credentials = []
     read_content = (
         "Instancia Voo",
         "Hora De Partida Prevista",
@@ -322,9 +318,13 @@ class VooViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
     url = "/crud/voo"
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
+        {"username": "gerente", "password": "senha-do-gerente"},
+        {"username": "operador", "password": "senha-do-operador"},
     ]
     forbidden_credentials = [
+        {"username": "funcionario", "password": "senha-do-func"},
         {"username": "piloto", "password": "senha-do-piloto"},
+        {"username": "torre", "password": "senha-da-torre"},
     ]
     read_content = (
         "Voo",
@@ -432,6 +432,7 @@ class IndexTest(RelatoriosTestFixture):
         self.assertTrue(response.status_code == 200)
         self.assertTrue(len(response.context["partidas"]) == 1)
         self.assertTrue(len(response.context["chegadas"]) == 0)
+
 
 class MovimentacaoInterfaceTest(RelatoriosTestFixture):
 
