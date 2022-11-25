@@ -48,7 +48,9 @@ class Voo(models.Model):
 
 
 class InstanciaVoo(models.Model):
-    partida_prevista = models.DateTimeField(verbose_name="hora de partida prevista")
+    partida_prevista = models.DateTimeField(
+        null=True, blank=True, verbose_name="hora de partida prevista"
+    )
     partida_real = models.DateTimeField(
         null=True, blank=True, verbose_name="hora de partida"
     )
@@ -66,7 +68,6 @@ class InstanciaVoo(models.Model):
     voo = models.ForeignKey(
         Voo, null=True, on_delete=models.SET_NULL, verbose_name="rota"
     )
-
 
     def save(self, *args, **kwargs):
         if not self.estado_atual:
