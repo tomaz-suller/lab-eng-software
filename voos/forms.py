@@ -1,6 +1,48 @@
 from django import forms
 
-from .models import InstanciaVoo
+from .models import Voo, InstanciaVoo
+
+
+class VooForm(forms.ModelForm):
+
+    def clean(self):
+        cleaned_data = super().clean()
+        voo_contains_gru = "gru" in (
+            cleaned_data.get(key).lower()
+            for key in ("origem", "destino")
+        )
+        if not voo_contains_gru:
+            self.add_error(
+                None,
+                "Origem ou destino precisa ser GRU."
+            )
+
+    class Meta:
+        model = Voo
+        fields = []
+
+
+class VooCreateForm(VooForm):
+
+    class Meta:
+        model = Voo
+        fields = [
+            "codigo",
+            "origem",
+            "destino",
+            "companhia_aerea"
+        ]
+
+
+class VooUpdateForm(VooForm):
+
+    class Meta:
+        model = Voo
+        fields = [
+            "origem",
+            "destino",
+            "companhia_aerea"
+        ]
 
 
 def _departure_after_arrival(departure, arrival):

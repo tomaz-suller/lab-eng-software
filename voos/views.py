@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .forms import InstanciaVooUpdateForm, InstanciaVooCreateForm
+from .forms import VooUpdateForm, InstanciaVooUpdateForm, VooCreateForm, InstanciaVooCreateForm
 from .models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao, Voo
 
 
@@ -72,14 +72,14 @@ class VooListView(PermissionRequiredMixin, BaseListView):
 class VooCreateView(PermissionRequiredMixin, BaseCreateView):
     model = Voo
     permission_required = "voos.add_voo"
-    fields = ["codigo", "origem", "destino", "companhia_aerea"]
+    form_class = VooCreateForm
     success_url = "/crud/voo"
 
 
 class VooUpdateView(PermissionRequiredMixin, BaseUpdateView):
     model = Voo
     permission_required = "voos.change_voo"
-    fields = ["codigo", "origem", "destino", "companhia_aerea"]
+    form_class = VooUpdateForm
     success_url = "/crud/voo"
 
 
