@@ -85,7 +85,7 @@ class VooUpdateView(PermissionRequiredMixin, BaseUpdateView):
 
 class VooDeleteView(PermissionRequiredMixin, BaseDeleteView):
     model = Voo
-    permission_required = "voos.delete_companhiaaerea"
+    permission_required = "voos.delete_voo"
     success_url = "/crud/voo"
 
 
@@ -232,18 +232,18 @@ def relatorio_movimentacoes(request):
             },
         )
 
-state_permission_dict = {'Aterissado': ['Embarcando']}
 
 def movimentacao_detail(request, pk):
     state_permission_dict = {
-        'Aterissado': ['Aterissado','Embarcando', 'Cancelado'],
+        'Parado na origem': ['Parado na origem','Embarcando', 'Cancelado'],
         'Embarcando': ['Embarcando','Programado'],
         'Programado': ['Programado','Taxiando'],
         'Taxiando': ['Taxiando','Pronto'],
         'Pronto': ['Pronto', 'Autorizado'],
         'Autorizado': ['Autorizado','Em voo'],
-        'Em voo': ['Em voo','Aterissado'],
-        'Cancelado': ['Cancelado']
+        'Em voo': ['Em voo','Aterissado no destino'],
+        'Cancelado': ['Cancelado'],
+        'Aterissado no destino': ['Aterissado no destino']
     }
 
     instancia_voo = InstanciaVoo.objects.get(id=pk)
@@ -270,7 +270,7 @@ def movimentacao_confirmado(request):
 
     # Atualiza voo
     instancia_voo.estado_atual = novo_estado
-    if novo_estado_str == 'Aterissado':
+    if novo_estado_str == 'Aterissado no destino':
         instancia_voo.chegada_real = timezone.now()
     elif novo_estado_str == 'Em voo':
         instancia_voo.partida_real = timezone.now()

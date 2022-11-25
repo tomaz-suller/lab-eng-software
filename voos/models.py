@@ -3,7 +3,7 @@ from django.core.validators import RegexValidator
 
 
 class Estado(models.Model):
-    nome = models.CharField(max_length=15)
+    nome = models.CharField(max_length=30)
 
     def __str__(self) -> str:
         return f"Estado {self.nome}"
@@ -59,13 +59,23 @@ class InstanciaVoo(models.Model):
     estado_atual = models.ForeignKey(
         Estado,
         blank=True,
-        default=1,
+        null=True,
         on_delete=models.PROTECT,
         verbose_name="estado atual",
     )
     voo = models.ForeignKey(
         Voo, null=True, on_delete=models.SET_NULL, verbose_name="rota"
     )
+
+
+    def save(self, *args, **kwargs):
+        if not self.estado_atual:
+            if self.voo.destino == "GRU":
+                self.estado_atual = Estado.objects.get(nome="Em voo")
+            else:
+                self.estado_atual = Estado.objects.get(nome="Parado na origem")
+
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"Voo {self.id} associado a {self.voo}"
