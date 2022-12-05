@@ -14,8 +14,7 @@ Grupo 2
 ## Uso
 
 ### Instalação
-As seguintes instruções foram pensadas para sistemas Windows.
-É necessário ter configurado um ambiente previamente com Python>=3.6 e Git.
+É necessário ter configurado um ambiente previamente com Python>=3.9 e Git.
 Em seguida:
 
 1. Clonar o repositório
@@ -35,7 +34,7 @@ Em seguida:
 
     * Em sistmas UNIX-like (como macOS ou Linux):
         ```bash
-        source venv/bin/activate
+        source env/bin/activate
         ```
 
 4. Instalar os requisitos de Python em `requirements/production.txt`
@@ -43,33 +42,44 @@ Em seguida:
     pip install -r requirements/production.txt
     ```
 
-### Inicialização
+### Inicialização do Banco de Dados
 Antes de executar a aplicação, é necessário realizar a configuração do banco de dados realizando _migrations_:
 ```
 python manage.py migrate
 ```
 
-Também é necessário carregar o dump disponível no repositório para carregar os usuários de teste:
+Dumps do banco de dados estão disponívels no repositório para fornecer dados padrão e facilitar testes de navegação.
+Existem dois dumps que podem ser carregados:
+* `db_min.json`, que contém usuários e grupos com permissões pré-definidas mas não contém nenhum registro no sistema de monitoração de voos;
+* `db.json`, que contém usuários e grupos, e registros padrão de voos.
+Um dump pode ser carregado usando o comando `loaddata`. Por exemplo, para carregar `db.json`, é necessário executar:
 ```
 python manage.py loaddata db.json
 ```
 
-Para realizar o teste de navegação, a página raíz (index) deve ser acessada após iniciar o servidor com:
+### Acesso ao sistema
+
+Com os dados importados, é necessário iniciar o servidor:
 ```
 python manage.py runserver
 ```
 
-Em seguida selecione o item "Login". Nessa opção, pode-se autenticar com os usuários:
-- Usuário: **piloto**. Senha: **senha-do-piloto**. Tem acesso apenas a movimentações e alguns itens do CRUD.
-- Usuário: **gerente**. Senha: **senha-do-gerente**. Tem acesso a alguns itens do CRUD, movimentações e relatórios.
-- Usuário: **admin**. Senha: **admin**. Super-usuário de administração do sistema, tem acesso a todas as funcionalidades do sistema.
-- Usuário: **operador**. Senha: **senha-do-operador**. Tem acesso aos itens do CRUD;
-- Usuário: **torre**. Senha: **senha-da-torre**. Tem acesso aos itens das movimentações;
-- Usuário: **funcionario**. Senha: **senha-do-func**. Tem acesso aos itens das movimentações;
+Em seguida, na página raiz (acessível em geral por `localhost:8000` ou `127.0.0.1:8000`) selecione o item "Login".
+Nessa opção, pode-se autenticar com os usuários:
+
+| Usuário           | Senha                 | Permissões                            |
+|-------------------|-----------------------|---------------------------------------|
+| `piloto`          | `senha-do-piloto`     | Movimentações e alguns itens do CRUD  |
+| `gerente`         | `senha-do-gerente`    | Movimentações, relatórios e CRUD      |
+| `operador`        | `senha-do-operador`   | CRUD                                  |
+| `torre`           | `senha-da-torre`      | Movimentações                         |
+| `funcionario`     | `senha-do-func`       | Movimentações                         |
+
+Além desses usuários, existe o super-usuário de administração do sistema, que tem acesso a todas as suas funcionalidades. Seu usuário é `admin` e senha, `admin`.
 
 De acordo com o usuário autenticado, as opções disponíveis mudam no menu principal.
 
-### Desbloqueio após senha incorretas
+#### Desbloqueio após senha incorretas
 
 Após 3 tentativas incorretas de login, o acesso ao sistema é bloqueado. Para desbloqueá-lo é necessário parar o servidor em execução e executar o comando
 ```
