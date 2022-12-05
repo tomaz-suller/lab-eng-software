@@ -103,7 +103,7 @@ pre-commit install
 É recomendado ainda configurar o seu editor de texto para realizar lint dos arquivos usando `flake8` automaticamente. Para o Visual Studio Code, instruções estão disponíveis na [documentação](https://code.visualstudio.com/docs/python/linting#_flake8).
 
 ### Modificação nos modelos
-A cada modificação nos arquivos de especificação, é necessário gerar movas _migrations_:
+A cada modificação nos arquivos de especificação, é necessário gerar movas migrations:
 ```
 python manage.py makemigrations
 ```
