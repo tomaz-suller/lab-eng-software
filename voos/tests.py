@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Dict, Iterable, Union
-from unittest import expectedFailure
 
 from django.template.response import TemplateResponse
 from django.test import TestCase
@@ -242,7 +241,7 @@ class ViewTestFixture:
 
 
 class CompanhiaAereaViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
-# class Foo:
+    # class Foo:
     url = "/crud/companhia-aerea"
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
@@ -272,7 +271,7 @@ class CompanhiaAereaViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
 
 
 class InstanciaVooViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
-# class Bar:
+    # class Bar:
     url = "/crud/instancia-voo"
     allowed_credentials = [
         {"username": "admin", "password": "admin"},
@@ -339,15 +338,15 @@ class VooViewTest(ViewTestFixture, MonitoramentoAvioesTestFixture):
     )
     create_content = {
         "codigo": "AA4321",
-        "origem": "USA",
-        "destino": "BRA",
+        "origem": "LGA",
+        "destino": "GRU",
         "companhia_aerea": "1",
     }
     update_content = {
         "pk": "AA1234",
-        "codigo": "AA4321",
-        "origem": "FRA",
-        "destino": "BRA",
+        "codigo": "AA1234",
+        "origem": "GRU",
+        "destino": "CDG",
         "companhia_aerea": "1",
     }
     delete_pk = "AA1234"
@@ -435,7 +434,6 @@ class IndexTest(RelatoriosTestFixture):
 
 
 class MovimentacaoInterfaceTest(RelatoriosTestFixture):
-
     def test_acesso(self):
         response = self.client.get(
             "/movimentacao/",
