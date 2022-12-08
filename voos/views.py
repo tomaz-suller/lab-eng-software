@@ -235,16 +235,28 @@ def relatorio_movimentacoes(request):
 
 def movimentacao_detail(request, pk):
     state_permission_dict = {
-        'Parado na origem': ['Parado na origem','Embarcando', 'Cancelado'],
-        'Embarcando': ['Embarcando','Programado'],
-        'Programado': ['Programado','Taxiando'],
-        'Taxiando': ['Taxiando','Pronto'],
-        'Pronto': ['Pronto', 'Autorizado'],
-        'Autorizado': ['Autorizado','Em voo'],
-        'Em voo': ['Em voo','Aterissado no destino'],
+        'Parado na origem': ['Parado na origem'],
+        'Embarcando': ['Embarcando'],
+        'Programado': ['Programado'],
+        'Taxiando': ['Taxiando'],
+        'Pronto': ['Pronto'],
+        'Autorizado': ['Autorizado'],
+        'Em voo': ['Em voo'],
         'Cancelado': ['Cancelado'],
         'Aterissado no destino': ['Aterissado no destino']
     }
+
+    current_username = request.user.username
+    if current_username == "funcionario":
+        state_permission_dict['Parado na origem'] = ['Parado na origem','Embarcando','Cancelado']
+        state_permission_dict['Embarcando'] = ['Embarcando','Programado','Cancelado']
+    elif current_username == "piloto":
+        state_permission_dict['Programado'] = ['Programado','Taxiando','Cancelado']
+        state_permission_dict['Taxiando'] = ['Taxiando','Pronto','Cancelado']
+        state_permission_dict['Autorizado'] = ['Autorizado','Em voo','Cancelado']
+        state_permission_dict['Em voo'] = ['Em voo','Aterissado no destino']
+    elif current_username == "torre":
+        state_permission_dict['Pronto'] = ['Pronto', 'Autorizado','Cancelado']
 
     instancia_voo = InstanciaVoo.objects.get(id=pk)
     estado_atual = instancia_voo.estado_atual.nome
