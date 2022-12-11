@@ -11,7 +11,7 @@ from voos.models import CompanhiaAerea, Estado, InstanciaVoo, Movimentacao, Voo
 class MonitoramentoAvioesTestFixture(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
-        departure_datetime = datetime(2022, 1, 1, 1, 0, tzinfo=timezone.utc)
+        departure_datetime = datetime(2022, 1, 1, 1, 0).astimezone()
         cls.estado_autorizado = Estado.objects.create(nome="Autorizado")
         cls.estado_voando = Estado.objects.create(nome="Em voo")
         cls.companhia = CompanhiaAerea.objects.create(

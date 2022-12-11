@@ -17,7 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 USE_TZ = True
-TIME_ZONE = 'America/Sao_Paulo'
+TIME_ZONE = "America/Sao_Paulo"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "voos",
-
-    'axes', # Bloqueio de login
+    "axes",  # Bloqueio de login
 ]
 
 MIDDLEWARE = [
@@ -52,7 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'axes.middleware.AxesMiddleware', # Axes
+    "axes.middleware.AxesMiddleware",  # Axes
 ]
 
 ROOT_URLCONF = "monitoramento_avioes.urls"
@@ -106,8 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-   'axes.backends.AxesBackend', # Axes must be first
-   'django.contrib.auth.backends.ModelBackend',
+    "axes.backends.AxesBackend",  # Axes must be first
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 # Internationalization
@@ -115,7 +114,7 @@ AUTHENTICATION_BACKENDS = [
 
 LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Sao_Paulo"
 
 USE_I18N = True
 
